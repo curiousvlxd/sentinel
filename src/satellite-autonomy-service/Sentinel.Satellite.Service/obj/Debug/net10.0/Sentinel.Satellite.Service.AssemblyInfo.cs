@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Sentinel.Satellite.Service")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10e1e2ddb4bed2dd214a67b47d77074b0d320361")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad84e078c98779b1ec3c00573d46dc208ac5bec1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Sentinel.Satellite.Service")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Sentinel.Satellite.Service")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

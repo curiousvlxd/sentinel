@@ -9,10 +9,14 @@ public sealed class TelemetrySimulatorService : BackgroundService
     private readonly SemaphoreSlim _startStop = new(1, 1);
     private bool _running;
 
-    public TelemetrySimulatorService(IServiceProvider serviceProvider, ILogger<TelemetrySimulatorService> logger)
+    public TelemetrySimulatorService(IServiceProvider serviceProvider, IConfiguration configuration, ILogger<TelemetrySimulatorService> logger)
     {
         _serviceProvider = serviceProvider;
         _logger = logger;
+        var satelliteId = configuration["Satellite:Id"] ?? configuration["Simulator:SatelliteId"];
+        var missionId = configuration["Simulator:MissionId"];
+        if (!string.IsNullOrEmpty(satelliteId) && !string.IsNullOrEmpty(missionId))
+            _running = true;
     }
 
     public bool IsRunning => _running;
@@ -52,7 +56,7 @@ public sealed class TelemetrySimulatorService : BackgroundService
                 using var scope = _serviceProvider.CreateScope();
                 var ingest = scope.ServiceProvider.GetRequiredService<TelemetryIngestService>();
                 var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-                var satelliteIdStr = config["Simulator:SatelliteId"];
+                var satelliteIdStr = config["Satellite:Id"] ?? config["Simulator:SatelliteId"];
                 var missionIdStr = config["Simulator:MissionId"];
                 if (string.IsNullOrEmpty(satelliteIdStr) || !Guid.TryParse(satelliteIdStr, out var satelliteId) ||
                     string.IsNullOrEmpty(missionIdStr) || !Guid.TryParse(missionIdStr, out var missionId))

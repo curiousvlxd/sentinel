@@ -1,4 +1,3 @@
-# src/train.py
 from __future__ import annotations
 
 from pathlib import Path
@@ -50,7 +49,6 @@ def main(train_path: str = "data/train.jsonl") -> None:
     )
     save_artifact(artifact)
 
-    # stats for per-feature deviation-based contributions (use only base columns)
     X_base = X[schema.columns].copy()
     stats = compute_train_stats_for_contributions(X_base)
     save_train_stats(stats)

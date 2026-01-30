@@ -13,6 +13,7 @@
         "packagesPath": "C:\\Users\\curiousvlad\\.nuget\\packages\\",
         "outputPath": "D:\\Hackathons\\sentinel-backend\\src\\satellite-autonomy-service\\Sentinel.Core\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
         "configFilePaths": [
           "C:\\Users\\curiousvlad\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
@@ -45,10 +46,39 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[10.0.0, )",
+              "versionCentrallyManaged": true
+            },
             "System.Text.Json": {
               "target": "Package",
-              "version": "[10.0.0, )"
+              "version": "[10.0.0, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "Aspire.Hosting": "13.1.0",
+            "Aspire.Hosting.AppHost": "13.1.0",
+            "Aspire.Hosting.PostgreSQL": "13.1.0",
+            "Aspire.Npgsql": "13.1.0",
+            "Dapper": "2.1.35",
+            "EFCore.NamingConventions": "10.0.0-rc.2",
+            "Microsoft.AspNetCore.OpenApi": "10.0.1",
+            "Microsoft.EntityFrameworkCore": "10.0.0",
+            "Microsoft.EntityFrameworkCore.Design": "10.0.0",
+            "Microsoft.EntityFrameworkCore.Relational": "10.0.0",
+            "Microsoft.EntityFrameworkCore.Tools": "10.0.0",
+            "Microsoft.Extensions.Configuration.Binder": "10.0.1",
+            "Microsoft.Extensions.Hosting.Abstractions": "10.0.0",
+            "Microsoft.Extensions.Options.ConfigurationExtensions": "10.0.0",
+            "Microsoft.Extensions.ServiceDiscovery": "10.0.0",
+            "Npgsql": "10.0.0",
+            "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.0",
+            "Refit": "8.0.0",
+            "Refit.HttpClientFactory": "8.0.0",
+            "Scalar.Aspire": "0.8.20",
+            "System.Text.Json": "10.0.0"
           },
           "imports": [
             "net461",
@@ -353,6 +383,7 @@
         "packagesPath": "C:\\Users\\curiousvlad\\.nuget\\packages\\",
         "outputPath": "D:\\Hackathons\\sentinel-backend\\src\\satellite-autonomy-service\\Sentinel.Satellite.Service\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
         "configFilePaths": [
           "C:\\Users\\curiousvlad\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
@@ -392,14 +423,64 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "Aspire.Npgsql": {
+              "target": "Package",
+              "version": "[13.1.0, )",
+              "versionCentrallyManaged": true
+            },
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.35, )",
+              "versionCentrallyManaged": true
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[10.0.1, )"
+              "version": "[10.0.1, )",
+              "versionCentrallyManaged": true
+            },
+            "Microsoft.Extensions.ServiceDiscovery": {
+              "target": "Package",
+              "version": "[10.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Npgsql": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[10.0.0, )",
+              "versionCentrallyManaged": true
+            },
+            "Refit": {
+              "target": "Package",
+              "version": "[8.0.0, )",
+              "versionCentrallyManaged": true
+            },
+            "Refit.HttpClientFactory": {
+              "target": "Package",
+              "version": "[8.0.0, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "Aspire.Hosting": "13.1.0",
+            "Aspire.Hosting.AppHost": "13.1.0",
+            "Aspire.Hosting.PostgreSQL": "13.1.0",
+            "Aspire.Npgsql": "13.1.0",
+            "Dapper": "2.1.35",
+            "EFCore.NamingConventions": "10.0.0-rc.2",
+            "Microsoft.AspNetCore.OpenApi": "10.0.1",
+            "Microsoft.EntityFrameworkCore": "10.0.0",
+            "Microsoft.EntityFrameworkCore.Design": "10.0.0",
+            "Microsoft.EntityFrameworkCore.Relational": "10.0.0",
+            "Microsoft.EntityFrameworkCore.Tools": "10.0.0",
+            "Microsoft.Extensions.Configuration.Binder": "10.0.1",
+            "Microsoft.Extensions.Hosting.Abstractions": "10.0.0",
+            "Microsoft.Extensions.Options.ConfigurationExtensions": "10.0.0",
+            "Microsoft.Extensions.ServiceDiscovery": "10.0.0",
+            "Npgsql": "10.0.0",
+            "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.0",
+            "Refit": "8.0.0",
+            "Refit.HttpClientFactory": "8.0.0",
+            "Scalar.Aspire": "0.8.20",
+            "System.Text.Json": "10.0.0"
           },
           "imports": [
             "net461",
@@ -847,6 +928,7 @@
         "packagesPath": "C:\\Users\\curiousvlad\\.nuget\\packages\\",
         "outputPath": "D:\\Hackathons\\sentinel-backend\\src\\satellite-autonomy-service\\Sentinel.ServiceDefaults\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
         "configFilePaths": [
           "C:\\Users\\curiousvlad\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
@@ -878,6 +960,29 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
+          "centralPackageVersions": {
+            "Aspire.Hosting": "13.1.0",
+            "Aspire.Hosting.AppHost": "13.1.0",
+            "Aspire.Hosting.PostgreSQL": "13.1.0",
+            "Aspire.Npgsql": "13.1.0",
+            "Dapper": "2.1.35",
+            "EFCore.NamingConventions": "10.0.0-rc.2",
+            "Microsoft.AspNetCore.OpenApi": "10.0.1",
+            "Microsoft.EntityFrameworkCore": "10.0.0",
+            "Microsoft.EntityFrameworkCore.Design": "10.0.0",
+            "Microsoft.EntityFrameworkCore.Relational": "10.0.0",
+            "Microsoft.EntityFrameworkCore.Tools": "10.0.0",
+            "Microsoft.Extensions.Configuration.Binder": "10.0.1",
+            "Microsoft.Extensions.Hosting.Abstractions": "10.0.0",
+            "Microsoft.Extensions.Options.ConfigurationExtensions": "10.0.0",
+            "Microsoft.Extensions.ServiceDiscovery": "10.0.0",
+            "Npgsql": "10.0.0",
+            "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.0",
+            "Refit": "8.0.0",
+            "Refit.HttpClientFactory": "8.0.0",
+            "Scalar.Aspire": "0.8.20",
+            "System.Text.Json": "10.0.0"
+          },
           "imports": [
             "net461",
             "net462",

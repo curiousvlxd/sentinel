@@ -40,7 +40,6 @@ def vectorize_bucket(req: TelemetryBucketRequest, schema: FeatureSchema) -> pd.D
         miss.columns = [f"{c}.__missing__" for c in schema.columns]
         df = pd.concat([df, miss], axis=1)
 
-    # simple imputation; missing indicators keep info
     df = df.fillna(0.0)
     return df
 

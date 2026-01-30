@@ -1,13 +1,8 @@
-# src/schemas.py
 from __future__ import annotations
 
 from typing import Dict, List
 from pydantic import BaseModel, Field, ConfigDict, model_validator
 
-
-# ----------------------------
-# Request (input) schemas
-# ----------------------------
 
 class SignalFeatures(BaseModel):
     mean: float
@@ -20,18 +15,12 @@ class SignalFeatures(BaseModel):
 
 
 class TelemetryBucketRequest(BaseModel):
-    """
-    Canonical internal field name: signals
-    Backend may send: features
-    We accept BOTH `features` and `signals`.
-    """
     model_config = ConfigDict(populate_by_name=True)
 
     schema_version: str = "v1"
     bucket_start: str
     bucket_sec: int = 60
 
-    # Accept incoming key "features" (backend contract) but store as `signals`
     signals: Dict[str, SignalFeatures] = Field(default_factory=dict, alias="features")
 
     @model_validator(mode="before")
@@ -43,12 +32,10 @@ class TelemetryBucketRequest(BaseModel):
         signals = data.get("signals")
         features = data.get("features")
 
-        # If only "signals" was provided, map it into "features" so alias works
         if features is None and isinstance(signals, dict):
             data["features"] = signals
             return data
 
-        # If both are provided as dicts, merge; "features" takes priority
         if isinstance(signals, dict) and isinstance(features, dict):
             merged = dict(signals)
             merged.update(features)
@@ -56,10 +43,6 @@ class TelemetryBucketRequest(BaseModel):
 
         return data
 
-
-# ----------------------------
-# Response (output) schemas
-# ----------------------------
 
 class ModelInfo(BaseModel):
     name: str = "isolation_forest"

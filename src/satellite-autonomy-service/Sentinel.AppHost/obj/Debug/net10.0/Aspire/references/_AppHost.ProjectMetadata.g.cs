@@ -2,11 +2,20 @@
 
 namespace Projects;
 
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+/// <summary>
+/// Metadata for the Aspire AppHost project.
+/// </summary>
 [global::System.CodeDom.Compiler.GeneratedCode("Aspire.Hosting", null)]
 [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage(Justification = "Generated code.")]
 [global::System.Diagnostics.DebuggerDisplay("Type = {GetType().Name,nq}, ProjectPath = {ProjectPath}")]
 public class Sentinel_AppHost
+#pragma warning restore CS8981
 {
     private Sentinel_AppHost() { }
+
+    /// <summary>
+    /// The path to the Aspire Host project.
+    /// </summary>
     public static string ProjectPath => """D:\Hackathons\sentinel-backend\src\satellite-autonomy-service\Sentinel.AppHost""";
 }

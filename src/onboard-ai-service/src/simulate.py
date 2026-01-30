@@ -1,4 +1,3 @@
-# src/simulate.py
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -60,12 +59,10 @@ def generate_bucket(
 ) -> TelemetryBucketRequest:
     signals = {name: _make_features(rng, spec) for name, spec in specs.items()}
 
-    # emulate dynamic set: sometimes a signal missing
     if rng.random() < drop_signal_prob:
         name = rng.choice(list(signals.keys()))
         signals.pop(name, None)
 
-    # inject anomalies sometimes (USED ONLY FOR TEST DATA)
     if rng.random() < anomaly_prob and signals:
         keys = list(signals.keys())
         k = int(rng.integers(1, min(3, len(keys)) + 1))
@@ -123,7 +120,6 @@ def write_sample_request(out_path: Path = Path("data/sample_request.json"), seed
 
 
 if __name__ == "__main__":
-    # TRAIN: normal-only
     write_jsonl(
         out_path=Path("data/train.jsonl"),
         n_minutes=2000,
@@ -132,7 +128,6 @@ if __name__ == "__main__":
         drop_signal_prob=0.05,
     )
 
-    # TEST: contains anomalies (for evaluation only)
     write_jsonl(
         out_path=Path("data/test_anoms.jsonl"),
         n_minutes=400,

@@ -11,10 +11,22 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("Sentinel.AppHost")]
+[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("C:\\Users\\curiousvlad\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.1.0\\" +
+    "tools\\dcp.exe"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("C:\\Users\\curiousvlad\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.1.0\\" +
+    "tools\\ext\\"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", ("C:\\Users\\curiousvlad\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.1.0\\" +
+    "tools\\ext\\bin\\"))]
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "D:\\Hackathons\\sentinel-backend\\src\\satellite-autonomy-service\\Sentinel.AppHost")]
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectname", "Sentinel.AppHost.csproj")]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("C:\\Users\\curiousvlad\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\13.1.0\\tools\\As" +
+    "pire.Dashboard.exe"))]
+[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", ("D:\\Hackathons\\sentinel-backend\\src\\satellite-autonomy-service\\Sentinel.AppHost\\ob" +
+    "j\\"))]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Sentinel.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10e1e2ddb4bed2dd214a67b47d77074b0d320361")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad84e078c98779b1ec3c00573d46dc208ac5bec1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Sentinel.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Sentinel.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

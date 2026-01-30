@@ -1,7 +1,52 @@
 <Solution>
-  <Project Path="src/satellite-autonomy-service/Sentinel.AppHost/Sentinel.AppHost.csproj" />
-  <Project Path="src/satellite-autonomy-service/Sentinel.Core/Sentinel.Core.csproj" />
-  <Project Path="src/satellite-autonomy-service/Sentinel.Ground.Api/Sentinel.Ground.Api.csproj" />
-  <Project Path="src/satellite-autonomy-service/Sentinel.Satellite.Service/Sentinel.Satellite.Service.csproj" />
-  <Project Path="src/satellite-autonomy-service/Sentinel.ServiceDefaults/Sentinel.ServiceDefaults.csproj" />
+  <Folder Name="/infra/sql/satellite-db/">
+    <File Path="infra/sql/satellite-db/001-init.sql" />
+    <File Path="infra/sql/satellite-db/002-hypertables.sql" />
+    <File Path="infra/sql/satellite-db/003-continuous-aggregates.sql" />
+    <File Path="infra/sql/satellite-db/004-retention.sql" />
+  </Folder>
+  <Folder Name="/infra/sql/" />
+  <Folder Name="/infra/sql/ground-db/">
+    <File Path="infra/sql/ground-db/001-ground-tables.sql" />
+  </Folder>
+  <Folder Name="/infra/" />
+  <Folder Name="/infra/scripts/">
+    <File Path="infra/scripts/.gitkeep" />
+  </Folder>
+  <Folder Name="/src/">
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/onboard-ai-service/">
+    <File Path="src/onboard-ai-service/.dockerignore" />
+    <File Path="src/onboard-ai-service/Dockerfile" />
+    <File Path="src/onboard-ai-service/main.py" />
+    <File Path="src/onboard-ai-service/requirements.txt" />
+  </Folder>
+  <Folder Name="/src/onboard-ai-service/data/">
+    <File Path="src/onboard-ai-service/data/sample_request.json" />
+    <File Path="src/onboard-ai-service/data/test_anoms.jsonl" />
+    <File Path="src/onboard-ai-service/data/train.jsonl" />
+  </Folder>
+  <Folder Name="/src/onboard-ai-service/models/">
+    <File Path="src/onboard-ai-service/models/model.joblib" />
+    <File Path="src/onboard-ai-service/models/train_stats.json" />
+  </Folder>
+  <Folder Name="/src/onboard-ai-service/src/">
+    <File Path="src/onboard-ai-service/src/__init__.py" />
+    <File Path="src/onboard-ai-service/src/app.py" />
+    <File Path="src/onboard-ai-service/src/config.py" />
+    <File Path="src/onboard-ai-service/src/featureizer.py" />
+    <File Path="src/onboard-ai-service/src/model.py" />
+    <File Path="src/onboard-ai-service/src/schemas.py" />
+    <File Path="src/onboard-ai-service/src/simulate.py" />
+    <File Path="src/onboard-ai-service/src/train.py" />
+  </Folder>
+  <Folder Name="/src/satellite-autonomy-service/">
+    <Project Path="src/satellite-autonomy-service/Sentinel.AppHost/Sentinel.AppHost.csproj" />
+    <Project Path="src/satellite-autonomy-service/Sentinel.Core/Sentinel.Core.csproj" />
+    <Project Path="src/satellite-autonomy-service/Sentinel.Ground.Api/Sentinel.Ground.Api.csproj" />
+    <Project Path="src/satellite-autonomy-service/Sentinel.Infrastructure/Sentinel.Infrastructure.csproj" />
+    <Project Path="src/satellite-autonomy-service/Sentinel.Satellite.Service/Sentinel.Satellite.Service.csproj" />
+    <Project Path="src/satellite-autonomy-service/Sentinel.ServiceDefaults/Sentinel.ServiceDefaults.csproj" />
+  </Folder>
 </Solution>
