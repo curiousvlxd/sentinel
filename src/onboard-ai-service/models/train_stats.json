@@ -1,0 +1,170 @@
+{
+  "battery_voltage.max": {
+    "median": 12.59894458845556,
+    "iqr": 0.09981555280743315
+  },
+  "battery_voltage.mean": {
+    "median": 12.500251579201755,
+    "iqr": 0.06857292264073678
+  },
+  "battery_voltage.min": {
+    "median": 12.402718227622753,
+    "iqr": 0.09917274490059391
+  },
+  "battery_voltage.missing_rate": {
+    "median": 0.0,
+    "iqr": 0.006653062931915183
+  },
+  "battery_voltage.p95": {
+    "median": 12.566548788228761,
+    "iqr": 0.08191601238538837
+  },
+  "battery_voltage.slope": {
+    "median": -0.019579275352251256,
+    "iqr": 0.02748957285513911
+  },
+  "battery_voltage.std": {
+    "median": 0.05018178788326064,
+    "iqr": 0.014545357540287393
+  },
+  "cpu_temperature.max": {
+    "median": 47.128801051150504,
+    "iqr": 2.1802112670086373
+  },
+  "cpu_temperature.mean": {
+    "median": 44.97304136347567,
+    "iqr": 1.5304245651534174
+  },
+  "cpu_temperature.min": {
+    "median": 42.786306739657704,
+    "iqr": 2.146936244999914
+  },
+  "cpu_temperature.missing_rate": {
+    "median": 0.00020962952917755686,
+    "iqr": 0.00707634686724469
+  },
+  "cpu_temperature.p95": {
+    "median": 46.402297941834455,
+    "iqr": 1.7379254770239498
+  },
+  "cpu_temperature.slope": {
+    "median": 0.35349469963426094,
+    "iqr": 0.2021336686268193
+  },
+  "cpu_temperature.std": {
+    "median": 1.0939544151234872,
+    "iqr": 0.28645093190094983
+  },
+  "gyro_speed.max": {
+    "median": 0.2179520635928597,
+    "iqr": 0.11928438253874477
+  },
+  "gyro_speed.mean": {
+    "median": 0.09839201430314765,
+    "iqr": 0.07892946760931079
+  },
+  "gyro_speed.min": {
+    "median": -0.019971679964175683,
+    "iqr": 0.11930257992006481
+  },
+  "gyro_speed.missing_rate": {
+    "median": 0.0,
+    "iqr": 0.007043527501039424
+  },
+  "gyro_speed.p95": {
+    "median": 0.18089413707913304,
+    "iqr": 0.09606863134558372
+  },
+  "gyro_speed.slope": {
+    "median": 0.00937902431726185,
+    "iqr": 0.02443944264792386
+  },
+  "gyro_speed.std": {
+    "median": 0.05987036641496004,
+    "iqr": 0.015451628873343497
+  },
+  "power_consumption.max": {
+    "median": 184.4573848246468,
+    "iqr": 36.126422934742436
+  },
+  "power_consumption.mean": {
+    "median": 149.49478505051582,
+    "iqr": 24.534448628220474
+  },
+  "power_consumption.min": {
+    "median": 114.12764740786139,
+    "iqr": 36.704209954755854
+  },
+  "power_consumption.missing_rate": {
+    "median": 0.0,
+    "iqr": 0.005861997376257167
+  },
+  "power_consumption.p95": {
+    "median": 173.1505429147265,
+    "iqr": 28.78906883392054
+  },
+  "power_consumption.slope": {
+    "median": 0.7851787423022039,
+    "iqr": 0.9810033336992836
+  },
+  "power_consumption.std": {
+    "median": 18.122177674008345,
+    "iqr": 4.850441986334641
+  },
+  "pressure.max": {
+    "median": 101493.22051607336,
+    "iqr": 176.8295254213299
+  },
+  "pressure.mean": {
+    "median": 101320.29803051587,
+    "iqr": 123.65844899347576
+  },
+  "pressure.min": {
+    "median": 101142.02134057367,
+    "iqr": 180.69154758699005
+  },
+  "pressure.missing_rate": {
+    "median": 2.988305431892841e-05,
+    "iqr": 0.00715247779085434
+  },
+  "pressure.p95": {
+    "median": 101437.22487768382,
+    "iqr": 143.36992035184812
+  },
+  "pressure.slope": {
+    "median": 4.905621647216627,
+    "iqr": 5.805294943554899
+  },
+  "pressure.std": {
+    "median": 89.6605688805721,
+    "iqr": 24.805894036495403
+  },
+  "signal_strength.max": {
+    "median": -63.86594758694018,
+    "iqr": 6.59998702248312
+  },
+  "signal_strength.mean": {
+    "median": -70.19353568458367,
+    "iqr": 4.373724420701009
+  },
+  "signal_strength.min": {
+    "median": -76.47527015158505,
+    "iqr": 6.579004215974848
+  },
+  "signal_strength.missing_rate": {
+    "median": 0.0,
+    "iqr": 0.006935524667502892
+  },
+  "signal_strength.p95": {
+    "median": -65.96589222484326,
+    "iqr": 5.526266878124908
+  },
+  "signal_strength.slope": {
+    "median": -0.4125492497426393,
+    "iqr": 0.33142464882192474
+  },
+  "signal_strength.std": {
+    "median": 3.175785999454882,
+    "iqr": 0.8465799624873354
+  }
+}

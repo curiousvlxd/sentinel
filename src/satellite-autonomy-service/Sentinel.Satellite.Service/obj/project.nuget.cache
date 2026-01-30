@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "hqInqIfmeiM=",
+  "success": true,
+  "projectFilePath": "D:\\Hackathons\\sentinel-backend\\src\\satellite-autonomy-service\\Sentinel.Satellite.Service\\Sentinel.Satellite.Service.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.1\\microsoft.aspnetcore.openapi.10.0.1.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\npgsql\\9.0.1\\npgsql.9.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

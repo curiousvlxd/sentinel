@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="src/satellite-autonomy-service/Sentinel.AppHost/Sentinel.AppHost.csproj" />
+  <Project Path="src/satellite-autonomy-service/Sentinel.Core/Sentinel.Core.csproj" />
+  <Project Path="src/satellite-autonomy-service/Sentinel.Ground.Api/Sentinel.Ground.Api.csproj" />
+  <Project Path="src/satellite-autonomy-service/Sentinel.Satellite.Service/Sentinel.Satellite.Service.csproj" />
+  <Project Path="src/satellite-autonomy-service/Sentinel.ServiceDefaults/Sentinel.ServiceDefaults.csproj" />
+</Solution>

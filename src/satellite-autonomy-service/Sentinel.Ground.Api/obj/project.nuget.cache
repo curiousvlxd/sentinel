@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "dgSpecHash": "8tz/2eo3gU8=",
+  "success": true,
+  "projectFilePath": "D:\\Hackathons\\sentinel-backend\\src\\satellite-autonomy-service\\Sentinel.Ground.Api\\Sentinel.Ground.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\hangfire.aspnetcore\\1.8.17\\hangfire.aspnetcore.1.8.17.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\hangfire.core\\1.8.17\\hangfire.core.1.8.17.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\hangfire.netcore\\1.8.17\\hangfire.netcore.1.8.17.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\hangfire.postgresql\\1.20.9\\hangfire.postgresql.1.20.9.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.1\\microsoft.aspnetcore.openapi.10.0.1.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\newtonsoft.json\\11.0.1\\newtonsoft.json.11.0.1.nupkg.sha512",
+    "C:\\Users\\curiousvlad\\.nuget\\packages\\npgsql\\9.0.1\\npgsql.9.0.1.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Newtonsoft.Json' 11.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
+      "projectPath": "D:\\Hackathons\\sentinel-backend\\src\\satellite-autonomy-service\\Sentinel.Ground.Api\\Sentinel.Ground.Api.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\Hackathons\\sentinel-backend\\src\\satellite-autonomy-service\\Sentinel.Ground.Api\\Sentinel.Ground.Api.csproj",
+      "libraryId": "Newtonsoft.Json",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}
