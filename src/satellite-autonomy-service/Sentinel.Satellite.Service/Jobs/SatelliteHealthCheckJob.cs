@@ -121,15 +121,21 @@ public sealed class SatelliteHealthCheckJob : BackgroundService
 
                 await _eventsClient.PublishAsync(new GroundEventContract
                 {
-                    Type = "ml_result",
+                    EventId = Guid.NewGuid(),
+                    MissionId = sat.MissionId,
                     SatelliteId = sat.Id,
+                    Type = "ml_result",
+                    Ts = DateTime.UtcNow.ToString("O"),
                     BucketStart = mlResponse.BucketStart,
                     Payload = mlResponse.Ml
                 }, cancellationToken);
                 await _eventsClient.PublishAsync(new GroundEventContract
                 {
-                    Type = "decision",
+                    EventId = Guid.NewGuid(),
+                    MissionId = sat.MissionId,
                     SatelliteId = sat.Id,
+                    Type = "decision",
+                    Ts = DateTime.UtcNow.ToString("O"),
                     BucketStart = mlResponse.BucketStart,
                     Payload = new { type = decisionType.ToString(), reason }
                 }, cancellationToken);
@@ -144,7 +150,7 @@ public sealed class SatelliteHealthCheckJob : BackgroundService
     private sealed class SatelliteRow
     {
         public Guid Id { get; init; }
-        public Guid MissionId { get; init; }
+        public Guid? MissionId { get; init; }
         public string Name { get; init; } = "";
         public int? NoradId { get; init; }
         public string? ExternalId { get; init; }

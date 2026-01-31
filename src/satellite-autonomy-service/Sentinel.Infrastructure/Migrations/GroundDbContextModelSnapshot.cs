@@ -149,6 +149,67 @@ namespace Sentinel.Infrastructure.Migrations
                     b.ToTable("ml_health_results", (string)null);
                 });
 
+            modelBuilder.Entity("Sentinel.Core.Entities.Command", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("ClaimedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("claimed_at");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("ExecutedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("executed_at");
+
+                    b.Property<Guid?>("MissionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("mission_id");
+
+                    b.Property<string>("PayloadJson")
+                        .HasColumnType("text")
+                        .HasColumnName("payload_json");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer")
+                        .HasColumnName("priority");
+
+                    b.Property<Guid>("SatelliteId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("satellite_id");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<int>("TtlSec")
+                        .HasColumnType("integer")
+                        .HasColumnName("ttl_sec");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("command_type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_commands");
+
+                    b.HasIndex("SatelliteId")
+                        .HasDatabaseName("ix_commands_satellite_id");
+
+                    b.HasIndex("SatelliteId", "Status")
+                        .HasDatabaseName("ix_commands_satellite_id_status");
+
+                    b.ToTable("commands", (string)null);
+                });
+
             modelBuilder.Entity("Sentinel.Core.Entities.Satellite", b =>
                 {
                     b.Property<Guid>("Id")
@@ -164,7 +225,21 @@ namespace Sentinel.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("external_id");
 
-                    b.Property<Guid>("MissionId")
+                    b.Property<DateTime?>("LastBucketStart")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_bucket_start");
+
+                    b.Property<string>("LinkStatus")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("link_status");
+
+                    b.Property<string>("Mode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("operating_mode");
+
+                    b.Property<Guid?>("MissionId")
                         .HasColumnType("uuid")
                         .HasColumnName("mission_id");
 
@@ -176,6 +251,11 @@ namespace Sentinel.Infrastructure.Migrations
                     b.Property<int?>("NoradId")
                         .HasColumnType("integer")
                         .HasColumnName("norad_id");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("state");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -199,8 +279,7 @@ namespace Sentinel.Infrastructure.Migrations
                     b.HasOne("Sentinel.Core.Entities.Mission", null)
                         .WithMany()
                         .HasForeignKey("MissionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
+                        .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("fk_satellites_missions_mission_id");
                 });
 #pragma warning restore 612, 618

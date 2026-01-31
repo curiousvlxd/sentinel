@@ -17,7 +17,7 @@ public sealed class HealthController : ControllerBase
         await Response.StartAsync(cancellationToken);
 
         var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-        await foreach (var evt in eventBus.SubscribeAsync(cancellationToken))
+        await foreach (var evt in eventBus.SubscribeAsync(cancellationToken: cancellationToken))
         {
             var json = JsonSerializer.Serialize(evt, options);
             await Response.WriteAsync($"data: {json}\n\n", cancellationToken);

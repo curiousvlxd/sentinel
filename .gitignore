@@ -11,6 +11,7 @@
 # .NET
 ############################
 *.dll
+.idea/
 *.exe
 *.pdb
 *.cache
@@ -81,12 +82,34 @@ coverage/
 docker-compose.override.yml
 
 ############################
-# Node.js (если рядом фронт)
+# Node.js / Frontend
 ############################
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.npm
+.yarn-integrity
+.pnp.*
+dist/
+build/
+*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.npmrc
+.yarnrc
+pnpm-lock.yaml
+.bun.lockb
+.eslintcache
+.vite
+*.tsbuildinfo
+
+############################
+# Docs (troubleshooting only in chat, not in repo)
+############################
+**/TROUBLESHOOTING.md
 
 ############################
 # Temp / Misc

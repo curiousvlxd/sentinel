@@ -2,9 +2,6 @@ namespace Sentinel.AppHost.Constants;
 
 public static class ConfigKeys
 {
-    public const string ConnectionStringsSection = "ConnectionStrings";
-    public const string SatelliteDbKey = "SatelliteDb";
-    public const string GroundDbKey = "GroundDb";
     public const string GroundMigrateOnStartup = "Ground__Database__MigrateOnStartup";
     public const string GroundAnomalyThreshold = "Ground__AnomalyThreshold";
     public const string SeedMissionId = "Seed__MissionId";

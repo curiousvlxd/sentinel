@@ -11,20 +11,28 @@ public sealed class GroundDatabaseOptionsSetup(IConfiguration configuration)
     public void Configure(GroundDatabaseOptions options)
     {
         configuration.GetSection(GroundDatabaseOptions.SectionName).Bind(options);
-        var section = configuration.GetSection(ConnectionStringsKeys.SectionName);
-        var cs = section["ground"] ?? section[ConnectionStringsKeys.GroundDb];
-        if (string.IsNullOrEmpty(cs))
+        var connSection = configuration.GetSection(ConnectionStringsKeys.SectionName);
+        var cs = connSection["ground"] ?? connSection["Ground"] ?? connSection[ConnectionStringsKeys.GroundDb];
+        if (string.IsNullOrWhiteSpace(cs))
             return;
-        var builder = new NpgsqlConnectionStringBuilder(cs);
-        if (IsLocalServer(builder.Host))
-            builder.SslMode = SslMode.Disable;
-        options.ConnectionString = builder.ConnectionString;
+        var csb = new NpgsqlConnectionStringBuilder(cs);
+        if (ShouldDisableSsl(csb))
+            csb.SslMode = SslMode.Disable;
+        options.ConnectionString = csb.ConnectionString;
     }
 
-    private static bool IsLocalServer(string? host)
+    private bool ShouldDisableSsl(NpgsqlConnectionStringBuilder csb)
     {
-        if (string.IsNullOrEmpty(host))
+        var env = configuration["ASPNETCORE_ENVIRONMENT"] ?? configuration["DOTNET_ENVIRONMENT"] ?? "";
+        if (env.Equals("Development", StringComparison.OrdinalIgnoreCase))
             return true;
-        return host == "localhost" || host == "127.0.0.1" || host == "ground-db";
+        if (csb.SslMode is SslMode.Require or SslMode.VerifyFull or SslMode.VerifyCA)
+            return false;
+        var host = csb.Host?.Trim() ?? "";
+        return host.Length == 0 ||
+               host.Equals("localhost", StringComparison.OrdinalIgnoreCase) ||
+               host == "127.0.0.1" ||
+               host.Equals("ground-db", StringComparison.OrdinalIgnoreCase) ||
+               host.Equals("host.docker.internal", StringComparison.OrdinalIgnoreCase);
     }
 }

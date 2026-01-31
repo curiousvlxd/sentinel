@@ -10,11 +10,14 @@ public sealed class SatelliteConfiguration : IEntityTypeConfiguration<Satellite>
     {
         b.ToTable("satellites");
         b.HasKey(x => x.Id);
-        b.Property(x => x.MissionId).IsRequired();
+        b.Property(x => x.MissionId).IsRequired(false);
         b.Property(x => x.Name).IsRequired();
         b.Property(x => x.Status).IsRequired().HasConversion<string>();
+        b.Property(x => x.Mode).IsRequired().HasConversion<string>().HasColumnName("operating_mode");
+        b.Property(x => x.State).IsRequired().HasConversion<string>();
+        b.Property(x => x.LinkStatus).IsRequired().HasConversion<string>();
         b.Property(x => x.CreatedAt).IsRequired();
-        b.HasOne<Mission>().WithMany().HasForeignKey(x => x.MissionId).OnDelete(DeleteBehavior.Restrict);
+        b.HasOne<Mission>().WithMany().HasForeignKey(x => x.MissionId).OnDelete(DeleteBehavior.SetNull);
         b.HasIndex(x => x.MissionId);
         b.HasIndex(x => x.Status);
     }

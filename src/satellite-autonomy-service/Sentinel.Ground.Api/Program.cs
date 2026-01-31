@@ -7,7 +7,17 @@ using Sentinel.ServiceDefaults.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 builder.Services.AddControllers();
+builder.Services.AddHttpClient();
 builder.Services.AddOpenApi();
 builder.Services.AddPersistence();
 builder.Services.Configure<SeedOptions>(builder.Configuration.GetSection(SeedOptions.SectionName));
@@ -16,6 +26,7 @@ builder.Services.AddScoped<SeedService>();
 
 var app = builder.Build();
 
+app.UseCors();
 app.MapControllers();
 app.MapDefaultEndpoints();
 app.MapOpenApi();

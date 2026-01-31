@@ -7,26 +7,18 @@ using Sentinel.Ground.Api.Options;
 
 namespace Sentinel.Ground.Api.Services;
 
-public sealed class SeedService
+public sealed class SeedService(
+    IGroundDbContext context,
+    IOptions<SeedOptions> seedOptions,
+    ILogger<SeedService> logger)
 {
-    private readonly IGroundDbContext _context;
-    private readonly IOptions<SeedOptions> _seedOptions;
-    private readonly ILogger<SeedService> _logger;
-
-    public SeedService(IGroundDbContext context, IOptions<SeedOptions> seedOptions, ILogger<SeedService> logger)
-    {
-        _context = context;
-        _seedOptions = seedOptions;
-        _logger = logger;
-    }
-
     public async Task SeedIfEmptyAsync(CancellationToken cancellationToken = default)
     {
-        if (await _context.Missions.AnyAsync(cancellationToken))
+        if (await context.Missions.AnyAsync(cancellationToken))
             return;
 
-        var missionIdStr = _seedOptions.Value.MissionId;
-        var satelliteIdsStr = _seedOptions.Value.SatelliteIds;
+        var missionIdStr = seedOptions.Value.MissionId;
+        var satelliteIdsStr = seedOptions.Value.SatelliteIds;
         if (string.IsNullOrWhiteSpace(missionIdStr) || string.IsNullOrWhiteSpace(satelliteIdsStr) ||
             !Guid.TryParse(missionIdStr.Trim(), out var missionId))
             return;
@@ -48,20 +40,23 @@ public sealed class SeedService
             CreatedAt = DateTime.UtcNow,
             IsActive = true
         };
-        _context.Add(mission);
+        context.Add(mission);
 
         for (var i = 0; i < ids.Count; i++)
         {
-            _context.Add(new Satellite
+            context.Add(new Satellite
             {
                 Id = ids[i],
                 MissionId = mission.Id,
                 Name = $"airbus-sentinel-{i + 1}",
                 Status = SatelliteStatus.Active,
+                Mode = SatelliteMode.Assisted,
+                State = SatelliteState.Ok,
+                LinkStatus = LinkStatus.Offline,
                 CreatedAt = DateTime.UtcNow
             });
         }
-        await _context.SaveChangesAsync(cancellationToken);
-        _logger.LogInformation("Seeded mission {MissionId} and {Count} satellites.", mission.Id, ids.Count);
+        await context.SaveChangesAsync(cancellationToken);
+        logger.LogInformation("Seeded mission {MissionId} and {Count} satellites.", mission.Id, ids.Count);
     }
 }

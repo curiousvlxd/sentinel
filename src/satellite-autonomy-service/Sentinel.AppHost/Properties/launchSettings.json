@@ -8,17 +8,7 @@
       "applicationUrl": "http://localhost:15170",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_ENVIRONMENT": "Development",
-        "ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL": "http://localhost:19240",
-        "ASPIRE_RESOURCE_SERVICE_ENDPOINT_URL": "http://localhost:20154",
-        "Sentinel__PostgresUser": "postgres",
-        "Sentinel__PostgresPassword": "postgres",
-        "Sentinel__SatelliteDbName": "satellite",
-        "Sentinel__SatelliteDbPort": "5433",
-        "Sentinel__GroundDbName": "ground",
-        "Sentinel__GroundDbPort": "5434",
-        "Sentinel__AnomalyThreshold": "0.7",
-        "Sentinel__MigrateOnStartup": "true"
+        "DOTNET_ENVIRONMENT": "Development"
       }
     },
     "https": {
@@ -28,17 +18,7 @@
       "applicationUrl": "https://localhost:17134;http://localhost:15170",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_ENVIRONMENT": "Development",
-        "ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL": "https://localhost:21030",
-        "ASPIRE_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:22057",
-        "Sentinel__PostgresUser": "postgres",
-        "Sentinel__PostgresPassword": "postgres",
-        "Sentinel__SatelliteDbName": "satellite",
-        "Sentinel__SatelliteDbPort": "5433",
-        "Sentinel__GroundDbName": "ground",
-        "Sentinel__GroundDbPort": "5434",
-        "Sentinel__AnomalyThreshold": "0.7",
-        "Sentinel__MigrateOnStartup": "true"
+        "DOTNET_ENVIRONMENT": "Development"
       }
     }
   }

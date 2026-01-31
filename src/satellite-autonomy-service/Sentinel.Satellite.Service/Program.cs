@@ -9,6 +9,15 @@ using System.Text.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -34,6 +43,7 @@ builder.Services.AddHostedService(sp => sp.GetRequiredService<TelemetrySimulator
 
 var app = builder.Build();
 
+app.UseCors();
 app.MapControllers();
 app.MapDefaultEndpoints();
 app.MapOpenApi();

@@ -4,17 +4,111 @@
     <File Path="infra/sql/satellite-db/002-hypertables.sql" />
     <File Path="infra/sql/satellite-db/003-continuous-aggregates.sql" />
     <File Path="infra/sql/satellite-db/004-retention.sql" />
+    <File Path="infra/sql/satellite-db/Dockerfile" />
   </Folder>
   <Folder Name="/infra/sql/" />
-  <Folder Name="/infra/sql/ground-db/">
-    <File Path="infra/sql/ground-db/001-ground-tables.sql" />
-  </Folder>
   <Folder Name="/infra/" />
   <Folder Name="/infra/scripts/">
     <File Path="infra/scripts/.gitkeep" />
+    <File Path="infra/scripts/reset-db-volumes.ps1" />
+    <File Path="infra/scripts/reset-db-volumes.sh" />
   </Folder>
   <Folder Name="/src/">
     <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/">
+    <File Path="src/ground-ui-service/.gitignore" />
+    <File Path="src/ground-ui-service/components.json" />
+    <File Path="src/ground-ui-service/Dockerfile" />
+    <File Path="src/ground-ui-service/eslint.config.js" />
+    <File Path="src/ground-ui-service/index.html" />
+    <File Path="src/ground-ui-service/package.json" />
+    <File Path="src/ground-ui-service/package-lock.json" />
+    <File Path="src/ground-ui-service/README.md" />
+    <File Path="src/ground-ui-service/tsconfig.app.json" />
+    <File Path="src/ground-ui-service/tsconfig.json" />
+    <File Path="src/ground-ui-service/tsconfig.node.json" />
+    <File Path="src/ground-ui-service/vite.config.ts" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/public/">
+    <File Path="src/ground-ui-service/public/vite.svg" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/">
+    <File Path="src/ground-ui-service/src/index.css" />
+    <File Path="src/ground-ui-service/src/main.tsx" />
+    <File Path="src/ground-ui-service/src/router.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/api/">
+    <File Path="src/ground-ui-service/src/api/client.ts" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/api/Services/">
+    <File Path="src/ground-ui-service/src/api/Services/AssetApiService.ts" />
+    <File Path="src/ground-ui-service/src/api/Services/CommandsApiService.ts" />
+    <File Path="src/ground-ui-service/src/api/Services/DecisionsApiService.ts" />
+    <File Path="src/ground-ui-service/src/api/Services/MissionsApiService.ts" />
+    <File Path="src/ground-ui-service/src/api/Services/SatellitesApiService.ts" />
+    <File Path="src/ground-ui-service/src/api/Services/SseService.ts" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/assets/">
+    <File Path="src/ground-ui-service/src/assets/react.svg" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/components/" />
+  <Folder Name="/src/ground-ui-service/src/components/ui/">
+    <File Path="src/ground-ui-service/src/components/ui/badge.tsx" />
+    <File Path="src/ground-ui-service/src/components/ui/button.tsx" />
+    <File Path="src/ground-ui-service/src/components/ui/checkbox.tsx" />
+    <File Path="src/ground-ui-service/src/components/ui/input.tsx" />
+    <File Path="src/ground-ui-service/src/components/ui/separator.tsx" />
+    <File Path="src/ground-ui-service/src/components/ui/skeleton.tsx" />
+    <File Path="src/ground-ui-service/src/components/ui/tooltip.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/layouts/">
+    <File Path="src/ground-ui-service/src/layouts/AppLayout.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/lib/">
+    <File Path="src/ground-ui-service/src/lib/utils.ts" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/pages/" />
+  <Folder Name="/src/ground-ui-service/src/pages/Components/">
+    <File Path="src/ground-ui-service/src/pages/Components/CardWrap.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/pages/home/">
+    <File Path="src/ground-ui-service/src/pages/home/Home.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/pages/home/components/">
+    <File Path="src/ground-ui-service/src/pages/home/components/List.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/pages/missions/">
+    <File Path="src/ground-ui-service/src/pages/missions/MissionCommands.tsx" />
+    <File Path="src/ground-ui-service/src/pages/missions/MissionDetails.tsx" />
+    <File Path="src/ground-ui-service/src/pages/missions/MissionForm.tsx" />
+    <File Path="src/ground-ui-service/src/pages/missions/MissionsList.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/pages/notFound/">
+    <File Path="src/ground-ui-service/src/pages/notFound/NotFound.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/pages/satellite/">
+    <File Path="src/ground-ui-service/src/pages/satellite/Satellite.tsx" />
+    <File Path="src/ground-ui-service/src/pages/satellite/SatelliteDetails.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/pages/satellite/components/">
+    <File Path="src/ground-ui-service/src/pages/satellite/components/metadata.tsx" />
+    <File Path="src/ground-ui-service/src/pages/satellite/components/summaryCard.tsx" />
+    <File Path="src/ground-ui-service/src/pages/satellite/components/summaryList.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/pages/satellites/">
+    <File Path="src/ground-ui-service/src/pages/satellites/SatelliteForm.tsx" />
+    <File Path="src/ground-ui-service/src/pages/satellites/SatellitesList.tsx" />
+  </Folder>
+  <Folder Name="/src/ground-ui-service/src/types/">
+    <File Path="src/ground-ui-service/src/types/command.ts" />
+    <File Path="src/ground-ui-service/src/types/decision.ts" />
+    <File Path="src/ground-ui-service/src/types/isolationForestSummary.ts" />
+    <File Path="src/ground-ui-service/src/types/mission.ts" />
+    <File Path="src/ground-ui-service/src/types/mlResult.ts" />
+    <File Path="src/ground-ui-service/src/types/satellite.ts" />
+    <File Path="src/ground-ui-service/src/types/satelliteApi.ts" />
+    <File Path="src/ground-ui-service/src/types/sse.ts" />
   </Folder>
   <Folder Name="/src/onboard-ai-service/">
     <File Path="src/onboard-ai-service/.dockerignore" />

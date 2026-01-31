@@ -15,6 +15,7 @@ public sealed class SentinelHostOptions
     public GroundOptions Ground { get; set; } = null!;
     public SeedOptions Seed { get; set; } = null!;
     public List<SatelliteInstanceOptions> SatelliteInstances { get; set; } = new();
+    public int MaxSatelliteInstances { get; set; }
 
     public sealed class PostgresOptions
     {
@@ -35,7 +36,6 @@ public sealed class SentinelHostOptions
     public sealed class GroundDbOptions
     {
         public string Name { get; set; } = "";
-        public string InfraSqlPath { get; set; } = "";
         public string VolumeSubdir { get; set; } = "";
     }
 

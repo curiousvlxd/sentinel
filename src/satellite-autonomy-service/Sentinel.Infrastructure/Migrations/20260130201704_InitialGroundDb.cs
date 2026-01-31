@@ -10,6 +10,48 @@ namespace Sentinel.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "missions",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    is_active = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_missions", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "satellites",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    mission_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    norad_id = table.Column<int>(type: "integer", nullable: true),
+                    external_id = table.Column<string>(type: "text", nullable: true),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    operating_mode = table.Column<string>(type: "text", nullable: false, defaultValue: "Assisted"),
+                    state = table.Column<string>(type: "text", nullable: false, defaultValue: "Ok"),
+                    link_status = table.Column<string>(type: "text", nullable: false, defaultValue: "Offline"),
+                    last_bucket_start = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_satellites", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_satellites_missions_mission_id",
+                        column: x => x.mission_id,
+                        principalTable: "missions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "decisions",
                 columns: table => new
                 {
@@ -24,21 +66,6 @@ namespace Sentinel.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_decisions", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "missions",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    is_active = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_missions", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,26 +89,24 @@ namespace Sentinel.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "satellites",
+                name: "commands",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    mission_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    norad_id = table.Column<int>(type: "integer", nullable: true),
-                    external_id = table.Column<string>(type: "text", nullable: true),
+                    satellite_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    mission_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    command_type = table.Column<string>(type: "text", nullable: false),
+                    payload_json = table.Column<string>(type: "text", nullable: true),
+                    priority = table.Column<int>(type: "integer", nullable: false),
+                    ttl_sec = table.Column<int>(type: "integer", nullable: false),
                     status = table.Column<string>(type: "text", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    claimed_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    executed_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_satellites", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_satellites_missions_mission_id",
-                        column: x => x.mission_id,
-                        principalTable: "missions",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("pk_commands", x => x.id);
                 });
 
             migrationBuilder.CreateIndex(
@@ -103,21 +128,25 @@ namespace Sentinel.Infrastructure.Migrations
                 name: "ix_satellites_status",
                 table: "satellites",
                 column: "status");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_commands_satellite_id",
+                table: "commands",
+                column: "satellite_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_commands_satellite_id_status",
+                table: "commands",
+                columns: new[] { "satellite_id", "status" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "decisions");
-
-            migrationBuilder.DropTable(
-                name: "ml_health_results");
-
-            migrationBuilder.DropTable(
-                name: "satellites");
-
-            migrationBuilder.DropTable(
-                name: "missions");
+            migrationBuilder.DropTable(name: "commands");
+            migrationBuilder.DropTable(name: "decisions");
+            migrationBuilder.DropTable(name: "ml_health_results");
+            migrationBuilder.DropTable(name: "satellites");
+            migrationBuilder.DropTable(name: "missions");
         }
     }
 }
