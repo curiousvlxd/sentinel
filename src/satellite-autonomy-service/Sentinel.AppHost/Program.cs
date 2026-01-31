@@ -1,8 +1,7 @@
-using Aspire.Hosting.ApplicationModel;
 using Scalar.Aspire;
+using Sentinel.AppHost;
 using Sentinel.AppHost.Configuration;
 using Sentinel.AppHost.Constants;
-using Sentinel.AppHost;
 
 var builder = DistributedApplication.CreateBuilder(args);
 var options = new SentinelHostOptions();
@@ -69,6 +68,9 @@ for (var i = 0; i < instanceCount; i++)
         .WithEndpoint(port: onboardAiPort, targetPort: options.OnboardAi.Port, name: "http")
         .WithParentRelationship(group);
 
+    if (i == 0)
+        groundWithSeed = groundWithSeed.WithEnvironment("OnboardAi__Url", onboardAi.GetEndpoint("http"));
+
     var satelliteProject = builder.AddProject<Projects.Sentinel_Satellite_Service>(instance.Name)
         .WaitFor(satelliteDb)
         .WithReference(groundDb)
@@ -78,24 +80,24 @@ for (var i = 0; i < instanceCount; i++)
         .WithEnvironment(ConfigKeys.SatelliteInstanceName, instance.Name)
         .WithEnvironment(ConfigKeys.SatelliteOnboardAiServiceName, onboardAiResourceName)
         .WithEnvironment(ConfigKeys.SimulatorMissionId, options.Seed.MissionId)
+        .WithEnvironment(ConfigKeys.SimulatorSatelliteId, instance.Id)
         .WithEnvironment(context =>
         {
             context.EnvironmentVariables[$"Services__{onboardAiResourceName}__http__0"] = onboardAi.GetEndpoint("http");
             context.EnvironmentVariables["Services__ground-api__http__0"] = groundWithSeed.GetEndpoint("http");
         })
         .WithParentRelationship(group);
-    if (i == 0)
-        firstSatelliteProject = satelliteProject;
+    if (i == 0) firstSatelliteProject = satelliteProject;
+
     scalar.WithApiReference(satelliteProject);
 }
 
-if (firstSatelliteProject != null)
-    groundWithSeed.WithEnvironment("Ground__SatelliteServiceBaseUrl", firstSatelliteProject.GetEndpoint("http"));
-
 var groundUiPath = Path.Combine(repoRoot, "src", "ground-ui-service");
 if (Directory.Exists(groundUiPath))
+{
     builder.AddDockerfile("ground-ui", groundUiPath)
         .WithHttpEndpoint(port: 5180, targetPort: 80, name: "http")
         .WithEnvironment("GROUND_API_URL", groundWithSeed.GetEndpoint("http"));
+}
 
-await builder.Build().RunAsync();
+await builder.Build().RunAsync().ConfigureAwait(false);

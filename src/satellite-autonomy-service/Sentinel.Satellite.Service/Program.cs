@@ -1,10 +1,19 @@
 using Refit;
-using Sentinel.Satellite.Service.Contracts.OnboardAi;
-using Sentinel.Satellite.Service.Jobs;
-using Sentinel.Satellite.Service.Options;
-using Sentinel.Satellite.Service.Services;
-using Sentinel.ServiceDefaults.Extensions;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
+using Sentinel.Satellite.Service.Constants;
+using Sentinel.Satellite.Service.Contracts.OnboardAi.Options;
+using Sentinel.Satellite.Service.Jobs.SatelliteHealthCheck;
+using Sentinel.Satellite.Service.Jobs.SatelliteHealthCheck.Options;
+using Sentinel.Satellite.Service.Options.Satellite;
+using Sentinel.Satellite.Service.Services;
+using Sentinel.Satellite.Service.Services.Clients.GroundApi;
+using Sentinel.Satellite.Service.Services.Clients.GroundApi.Options;
+using Sentinel.Satellite.Service.Services.DecisionEngine;
+using Sentinel.Satellite.Service.Services.DecisionEngine.Options;
+using Sentinel.Satellite.Service.Services.TelemetrySimulator;
+using Sentinel.Satellite.Service.Services.TelemetrySimulator.Options;
+using Sentinel.ServiceDefaults.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,21 +30,36 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-builder.AddKeyedNpgsqlDataSource("satellite");
-builder.AddKeyedNpgsqlDataSource("ground");
+builder.AddKeyedNpgsqlDataSource(DataSources.Satellite);
+builder.AddKeyedNpgsqlDataSource(DataSources.Ground);
 
-builder.Services.Configure<GroundOptions>(builder.Configuration.GetSection(GroundOptions.SectionName));
-builder.Services.Configure<SatelliteHealthCheckOptions>(builder.Configuration.GetSection(SatelliteHealthCheckOptions.SectionName));
-builder.Services.Configure<SatelliteOptions>(builder.Configuration.GetSection(SatelliteOptions.SectionName));
+builder.Services.ConfigureOptions<SatelliteOptionsSetup>();
+builder.Services.ConfigureOptions<SatelliteHealthCheckOptionsSetup>();
+builder.Services.ConfigureOptions<DecisionEngineOptionsSetup>();
+builder.Services.ConfigureOptions<GroundApiOptionsSetup>();
+builder.Services.ConfigureOptions<SimulatorOptionsSetup>();
+builder.Services.ConfigureOptions<OnboardAiOptionsSetup>();
 
-builder.Services.AddSingleton<TelemetryBucketReader>(sp => new TelemetryBucketReader(sp.GetRequiredKeyedService<Npgsql.NpgsqlDataSource>("satellite")));
-var onboardAiServiceName = builder.Configuration["Satellite:OnboardAiServiceName"] ?? "onboard-ai";
-var refitJson = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
-builder.Services.AddRefitClient<IOnboardAiClient>(new RefitSettings { ContentSerializer = new SystemTextJsonContentSerializer(refitJson) })
-    .ConfigureHttpClient(c => c.BaseAddress = new Uri($"https+http://{onboardAiServiceName}"));
-builder.Services.AddHttpClient<GroundEventsClient>(c => c.BaseAddress = new Uri("https+http://ground-api"));
+builder.Services.AddRefitClient<IGroundApiClient>(_ => new RefitSettings
+{
+    ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
+}).ConfigureHttpClient((sp, client) =>
+{
+    var opts = sp.GetRequiredService<IOptions<GroundApiOptions>>().Value;
+    client.BaseAddress = new Uri(opts.BaseUrl.TrimEnd('/') + "/");
+});
+
+builder.Services.AddRefitClient<Sentinel.Satellite.Service.Contracts.OnboardAi.IOnboardAiClient>(_ => new RefitSettings
+{
+    ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase })
+}).ConfigureHttpClient((sp, client) =>
+{
+    var opts = sp.GetRequiredService<IOptions<OnboardAiOptions>>().Value;
+    client.BaseAddress = new Uri(opts.BaseUrl.TrimEnd('/') + "/");
+});
+
+builder.Services.AddSingleton<TelemetryBucketReader>();
 builder.Services.AddSingleton<DecisionEngine>();
-
 builder.Services.AddSingleton<TelemetryIngestService>();
 builder.Services.AddSingleton<TelemetrySimulatorService>();
 builder.Services.AddHostedService<SatelliteHealthCheckJob>();
@@ -43,6 +67,7 @@ builder.Services.AddHostedService(sp => sp.GetRequiredService<TelemetrySimulator
 
 var app = builder.Build();
 
+app.UseExceptionHandlerDefaults();
 app.UseCors();
 app.MapControllers();
 app.MapDefaultEndpoints();

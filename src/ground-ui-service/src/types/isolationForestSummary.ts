@@ -16,7 +16,7 @@ export interface IsolationForestML {
 
 export interface IsolationForestSummary {
   schema_version: string;
-  bucket_start: string; // ISO timestamp
+  bucket_start: string;
   ml: IsolationForestML;
-  ai_response?: string | null; // nullable AI made response
+  ai_response?: string | null;
 }

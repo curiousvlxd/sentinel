@@ -1,21 +1,15 @@
 using Dapper;
 using Npgsql;
-using Sentinel.Core.Contracts;
+using Sentinel.Core.Contracts.Telemetry;
+using Sentinel.Satellite.Service.Constants;
 
 namespace Sentinel.Satellite.Service.Services;
 
-public sealed class TelemetryBucketReader
+public sealed class TelemetryBucketReader([FromKeyedServices(DataSources.Satellite)] NpgsqlDataSource dataSource)
 {
-    private readonly NpgsqlDataSource _dataSource;
-
-    public TelemetryBucketReader(NpgsqlDataSource dataSource)
-    {
-        _dataSource = dataSource;
-    }
-
     public async Task<TelemetryBucketRequest?> GetLatestBucketAsync(Guid satelliteId, CancellationToken cancellationToken = default)
     {
-        await using var conn = await _dataSource.OpenConnectionAsync(cancellationToken);
+        await using var conn = await dataSource.OpenConnectionAsync(cancellationToken);
         const string sql =
             """
             SELECT bucket AS Bucket, satellite_id AS SatelliteId,
@@ -36,8 +30,9 @@ public sealed class TelemetryBucketReader
             ORDER BY bucket DESC
             LIMIT 1
             """;
-        var row = await conn.QuerySingleOrDefaultAsync<Telemetry1mRow>(new CommandDefinition(sql, new { sid = satelliteId }, cancellationToken: cancellationToken));
-        if (row == null) return null;
+        var row = await conn.QuerySingleOrDefaultAsync<TelemetryOneMinutePoint>(new CommandDefinition(sql, new { sid = satelliteId }, cancellationToken: cancellationToken));
+
+        if (row is null) return null;
 
         const double expectedCount = 60.0;
         var missingRate = 1.0 - Math.Clamp(row.CountPerMinute / expectedCount, 0, 1);
@@ -67,46 +62,78 @@ public sealed class TelemetryBucketReader
             Mean = mean,
             Min = min,
             Max = max,
-            Std = (std.HasValue && !double.IsNaN(std.Value)) ? std.Value : 0,
+            Std = std.HasValue && !double.IsNaN(std.Value) ? std.Value : 0,
             Slope = 0,
             P95 = p95,
             MissingRate = missingRate
         };
 
-    private sealed class Telemetry1mRow
+    private sealed class TelemetryOneMinutePoint
     {
         public DateTime Bucket { get; init; }
+
         public Guid SatelliteId { get; init; }
+
         public double CpuTemperatureMean { get; init; }
+
         public double CpuTemperatureMin { get; init; }
+
         public double CpuTemperatureMax { get; init; }
+
         public double? CpuTemperatureStddev { get; init; }
+
         public double CpuTemperatureP95 { get; init; }
+
         public double CountPerMinute { get; init; }
+
         public double BatteryVoltageMean { get; init; }
+
         public double BatteryVoltageMin { get; init; }
+
         public double BatteryVoltageMax { get; init; }
+
         public double? BatteryVoltageStddev { get; init; }
+
         public double BatteryVoltageP95 { get; init; }
+
         public double PressureMean { get; init; }
+
         public double PressureMin { get; init; }
+
         public double PressureMax { get; init; }
+
         public double? PressureStddev { get; init; }
+
         public double PressureP95 { get; init; }
+
         public double GyroSpeedMean { get; init; }
+
         public double GyroSpeedMin { get; init; }
+
         public double GyroSpeedMax { get; init; }
+
         public double? GyroSpeedStddev { get; init; }
+
         public double GyroSpeedP95 { get; init; }
+
         public double SignalStrengthMean { get; init; }
+
         public double SignalStrengthMin { get; init; }
+
         public double SignalStrengthMax { get; init; }
+
         public double? SignalStrengthStddev { get; init; }
+
         public double SignalStrengthP95 { get; init; }
+
         public double PowerConsumptionMean { get; init; }
+
         public double PowerConsumptionMin { get; init; }
+
         public double PowerConsumptionMax { get; init; }
+
         public double? PowerConsumptionStddev { get; init; }
+
         public double PowerConsumptionP95 { get; init; }
     }
 }

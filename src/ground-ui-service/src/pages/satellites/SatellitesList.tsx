@@ -5,18 +5,19 @@ import type { SatelliteDto } from "@/types/satelliteApi";
 import { Plus, Satellite as SatelliteIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { formatUtcInUserTz } from "@/lib/dateUtils";
 import CardWrap from "../Components/CardWrap";
 
 const stateClass = (state: string) => {
   switch (state) {
     case "Ok":
-      return "bg-emerald-500/20 text-emerald-300";
+      return "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300";
     case "Risk":
-      return "bg-amber-500/20 text-amber-300";
+      return "bg-amber-500/20 text-amber-700 dark:text-amber-300";
     case "Problem":
-      return "bg-red-500/20 text-red-300";
+      return "bg-red-500/20 text-red-700 dark:text-red-300";
     default:
-      return "bg-slate-500/20 text-slate-400";
+      return "bg-slate-200 text-slate-700 dark:bg-slate-500/20 dark:text-slate-400";
   }
 };
 
@@ -40,7 +41,7 @@ const SatellitesList = () => {
   return (
     <CardWrap>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-indigo-100">Satellites</h1>
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-indigo-100">Satellites</h1>
         <Button
           onClick={() => navigate("/satellites/new")}
           className="bg-indigo-600 hover:bg-indigo-500 text-white"
@@ -55,17 +56,17 @@ const SatellitesList = () => {
           {[1, 2, 3].map((i) => (
             <Skeleton
               key={i}
-              className="h-16 w-full rounded-xl bg-[#626a76]/40"
+              className="h-16 w-full rounded-xl bg-slate-300 dark:bg-[#626a76]/40"
             />
           ))}
         </div>
       ) : satellites.length === 0 ? (
-        <p className="text-slate-400">No satellites yet. Create one to get started.</p>
+        <p className="text-slate-700 dark:text-slate-400">No satellites yet. Create one to get started.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-slate-600 text-slate-400">
+              <tr className="border-b border-slate-200 text-slate-700 dark:border-slate-600 dark:text-slate-400">
                 <th className="pb-3 pr-4 font-medium">Name</th>
                 <th className="pb-3 pr-4 font-medium">Mission</th>
                 <th className="pb-3 pr-4 font-medium">Mode</th>
@@ -79,25 +80,25 @@ const SatellitesList = () => {
                 <tr
                   key={s.id}
                   onClick={() => navigate(`/satellites/${s.id}`)}
-                  className="cursor-pointer border-b border-slate-700/50 hover:bg-[#1e2a3a]/50"
+                  className="cursor-pointer border-b border-slate-200 hover:bg-slate-50 dark:border-slate-700/50 dark:hover:bg-[#1e2a3a]/50"
                 >
                   <td className="flex items-center gap-2 py-3 pr-4">
-                    <SatelliteIcon className="h-4 w-4 text-indigo-400" />
-                    <span className="font-medium text-indigo-100">{s.name}</span>
+                    <SatelliteIcon className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
+                    <span className="font-medium text-slate-900 dark:text-indigo-100">{s.name}</span>
                   </td>
-                  <td className="py-3 pr-4 text-slate-300">
+                  <td className="py-3 pr-4 text-slate-700 dark:text-slate-300">
                     {s.missionName ?? "—"}
                   </td>
-                  <td className="py-3 pr-4 text-slate-300">{s.mode}</td>
+                  <td className="py-3 pr-4 text-slate-700 dark:text-slate-300">{s.mode}</td>
                   <td className="py-3 pr-4">
                     <span className={`rounded px-2 py-0.5 text-xs ${stateClass(s.state)}`}>
                       {s.state}
                     </span>
                   </td>
-                  <td className="py-3 pr-4 text-slate-300">{s.linkStatus}</td>
-                  <td className="py-3 text-slate-400">
+                  <td className="py-3 pr-4 text-slate-700 dark:text-slate-300">{s.linkStatus}</td>
+                  <td className="py-3 text-slate-700 dark:text-slate-400">
                     {s.lastBucketStart
-                      ? new Date(s.lastBucketStart).toLocaleString()
+                      ? formatUtcInUserTz(s.lastBucketStart)
                       : "—"}
                   </td>
                 </tr>

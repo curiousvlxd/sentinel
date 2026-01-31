@@ -5,6 +5,7 @@ import type { Mission } from "@/types/mission";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { formatUtcInUserTz } from "@/lib/dateUtils";
 import CardWrap from "../Components/CardWrap";
 
 const MissionsList = () => {
@@ -27,7 +28,7 @@ const MissionsList = () => {
   return (
     <CardWrap>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-indigo-100">Missions</h1>
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-indigo-100">Missions</h1>
         <Button
           onClick={() => navigate("/missions/new")}
           className="bg-indigo-600 hover:bg-indigo-500 text-white"
@@ -42,32 +43,32 @@ const MissionsList = () => {
           {[1, 2, 3].map((i) => (
             <Skeleton
               key={i}
-              className="h-20 w-full rounded-xl bg-[#626a76]/40"
+              className="h-20 w-full rounded-xl bg-slate-300 dark:bg-[#626a76]/40"
             />
           ))}
         </div>
       ) : missions.length === 0 ? (
-        <p className="text-slate-400">No missions yet. Create one to get started.</p>
+        <p className="text-slate-700 dark:text-slate-400">No missions yet. Create one to get started.</p>
       ) : (
         <div className="space-y-3">
           {missions.map((m) => (
             <div
               key={m.id}
               onClick={() => navigate(`/missions/${m.id}`)}
-              className="flex cursor-pointer items-center justify-between rounded-xl bg-[#1e2a3a] p-4 transition hover:bg-[#263244]"
+              className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-[#1e2a3a] dark:hover:bg-[#263244]"
             >
               <div>
-                <h2 className="font-medium text-indigo-100">{m.name}</h2>
+                <h2 className="font-medium text-slate-900 dark:text-indigo-100">{m.name}</h2>
                 {m.description && (
-                  <p className="mt-1 text-sm text-slate-400">{m.description}</p>
+                  <p className="mt-1 text-sm text-slate-700 dark:text-slate-400">{m.description}</p>
                 )}
-                <p className="mt-1 text-xs text-slate-500">
-                  Created {new Date(m.createdAt).toLocaleString()}
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-500">
+                  Created {formatUtcInUserTz(m.createdAt)}
                 </p>
               </div>
               <span
                 className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                  m.isActive ? "bg-emerald-500/20 text-emerald-300" : "bg-slate-500/20 text-slate-400"
+                  m.isActive ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-300" : "bg-slate-200 text-slate-600 dark:bg-slate-500/20 dark:text-slate-400"
                 }`}
               >
                 {m.isActive ? "Active" : "Inactive"}

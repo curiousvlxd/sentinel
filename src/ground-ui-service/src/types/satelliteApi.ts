@@ -1,4 +1,3 @@
-/** API shape for satellite (Ground.Api) */
 export interface SatelliteDto {
   id: string;
   missionId?: string | null;

@@ -1,63 +1,42 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using Sentinel.Core.Contracts;
+using Microsoft.Extensions.Options;
+using Sentinel.Core.Contracts.Events;
 using Sentinel.Ground.Api.Services;
 
 namespace Sentinel.Ground.Api.Controllers;
 
 [ApiController]
 [Route("api/sse")]
-public sealed class SseController : ControllerBase
+public sealed class SseController(IOptions<JsonOptions> jsonOptions) : ControllerBase
 {
+    private readonly JsonSerializerOptions _jsonOptions = jsonOptions.Value.JsonSerializerOptions;
+
     [HttpGet("missions/{missionId:guid}")]
-    public async Task GetMissionStream(
+    public Task GetMissionStream(
         Guid missionId,
         [FromServices] SseEventBus eventBus,
-        CancellationToken cancellationToken)
-    {
-        Response.ContentType = "text/event-stream";
-        Response.Headers.CacheControl = "no-cache";
-        await Response.StartAsync(cancellationToken);
-        var jsonOpts = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-        await foreach (var evt in eventBus.SubscribeAsync(missionId: missionId, cancellationToken: cancellationToken))
-        {
-            var data = JsonSerializer.Serialize(new
-            {
-                evt.EventId,
-                evt.MissionId,
-                evt.SatelliteId,
-                evt.Type,
-                evt.Ts,
-                evt.BucketStart,
-                evt.Payload
-            }, jsonOpts);
-            await Response.WriteAsync($"data: {data}\n\n", cancellationToken);
-            await Response.Body.FlushAsync(cancellationToken);
-        }
-    }
+        CancellationToken cancellationToken) =>
+        StreamEventsAsync(eventBus.SubscribeAsync(missionId: missionId, cancellationToken: cancellationToken), cancellationToken);
 
     [HttpGet("satellites/{satelliteId:guid}")]
-    public async Task GetSatelliteStream(
+    public Task GetSatelliteStream(
         Guid satelliteId,
         [FromServices] SseEventBus eventBus,
+        CancellationToken cancellationToken) =>
+        StreamEventsAsync(eventBus.SubscribeAsync(satelliteId: satelliteId, cancellationToken: cancellationToken), cancellationToken);
+
+    private async Task StreamEventsAsync(
+        IAsyncEnumerable<GroundEventContract> events,
         CancellationToken cancellationToken)
     {
         Response.ContentType = "text/event-stream";
         Response.Headers.CacheControl = "no-cache";
         await Response.StartAsync(cancellationToken);
-        var jsonOpts = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-        await foreach (var evt in eventBus.SubscribeAsync(satelliteId: satelliteId, cancellationToken: cancellationToken))
+
+        await foreach (var evt in events.WithCancellation(cancellationToken))
         {
-            var data = JsonSerializer.Serialize(new
-            {
-                evt.EventId,
-                evt.MissionId,
-                evt.SatelliteId,
-                evt.Type,
-                evt.Ts,
-                evt.BucketStart,
-                evt.Payload
-            }, jsonOpts);
+            var data = JsonSerializer.Serialize(evt, _jsonOptions);
             await Response.WriteAsync($"data: {data}\n\n", cancellationToken);
             await Response.Body.FlushAsync(cancellationToken);
         }

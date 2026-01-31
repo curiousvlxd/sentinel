@@ -1,0 +1,24 @@
+<Project>
+    <PropertyGroup>
+        <_TargetRid Condition="'$(RuntimeIdentifier)' != ''">$(RuntimeIdentifier)</_TargetRid>
+        <_TargetRid Condition="'$(_TargetRid)' == '' and '$(TargetRidOverride)' != ''">$(TargetRidOverride)</_TargetRid>
+        <_TargetRid Condition="'$(_TargetRid)' == ''">$([System.Environment]::GetEnvironmentVariable('TARGET_RID_OVERRIDE'))</_TargetRid>
+        <_TargetRid Condition="'$(_TargetRid)' == ''">$(NETCoreSdkRuntimeIdentifier)</_TargetRid>
+
+        <_SupportedRids>;osx-arm64;osx-x64;linux-arm64;linux-x64;win-arm64;win-x64;</_SupportedRids>
+        <_TargetRidSupported>$([System.String]::Copy('$(_SupportedRids)').Contains(';$(_TargetRid);'))</_TargetRidSupported>
+
+        <_EnvRidOverride>$([System.Environment]::GetEnvironmentVariable('TARGET_RID_OVERRIDE'))</_EnvRidOverride>
+    </PropertyGroup>
+
+    <Target Name="_ValidateTargetRid" BeforeTargets="Restore">
+        <Error Condition="'$(_TargetRid)' == ''"
+               Text="Unable to determine RID: _TargetRid is empty. Set RuntimeIdentifier or TargetRidOverride/TARGET_RID_OVERRIDE." />
+
+        <Error Condition="'$(_TargetRidSupported)' != 'True'"
+               Text="Unsupported RID '$(_TargetRid)'. Supported: osx-arm64, osx-x64, linux-arm64, linux-x64, win-arm64, win-x64." />
+
+        <Error Condition="'$(RuntimeIdentifier)' == '' and '$(TargetRidOverride)' == '' and '$(_EnvRidOverride)' == '' and '$(NETCoreSdkRuntimeIdentifier)' != '' and '$(_TargetRid)' != '$(NETCoreSdkRuntimeIdentifier)'"
+               Text="RID mismatch: _TargetRid='$(_TargetRid)' but NETCoreSdkRuntimeIdentifier='$(NETCoreSdkRuntimeIdentifier)'. Use RuntimeIdentifier/TargetRidOverride/TARGET_RID_OVERRIDE intentionally, or remove overrides." />
+    </Target>
+</Project>

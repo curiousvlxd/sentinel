@@ -64,12 +64,12 @@ const List = ({ items }: Props) => {
               </div>
 
               {item.description && (
-                <p className="mt-1 text-sm text-slate-300">
+                <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">
                   {item.description}
                 </p>
               )}
 
-              <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-slate-300">
+              <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-slate-700 dark:text-slate-300">
                 {item.orbitType && (
                   <div className="flex items-center gap-1">
                     <Orbit className="h-4 w-4 text-indigo-300" />

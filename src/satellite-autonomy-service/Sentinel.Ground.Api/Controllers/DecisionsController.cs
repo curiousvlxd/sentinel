@@ -1,34 +1,19 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Sentinel.Core.Abstractions.Persistence;
-using Sentinel.Core.Contracts;
+using Sentinel.Ground.Api.Extensions;
+using Sentinel.Ground.Application.Features.Decisions.Common.Contracts;
+using Sentinel.Ground.Application.Features.Decisions.GetDecisionById;
 
 namespace Sentinel.Ground.Api.Controllers;
 
 [ApiController]
 [Route("api/decisions")]
-public sealed class DecisionsController : ControllerBase
+public sealed class DecisionsController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{decisionId:guid}")]
-    public async Task<ActionResult<DecisionResponse>> Get(
-        Guid decisionId,
-        [FromServices] IGroundDbContext context,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<DecisionResponse>> Get(Guid decisionId, CancellationToken cancellationToken)
     {
-        var d = await context.Decisions
-            .Where(x => x.Id == decisionId)
-            .Select(x => new DecisionResponse
-            {
-                Id = x.Id,
-                SatelliteId = x.SatelliteId,
-                BucketStart = x.BucketStart.ToString("O"),
-                Type = x.DecisionType.ToString(),
-                Reason = x.Reason,
-                CreatedAt = x.CreatedAt.ToString("O")
-            })
-            .FirstOrDefaultAsync(cancellationToken);
-        if (d == null)
-            return NotFound();
-        return Ok(d);
+        var result = await mediator.Send(new GetDecisionByIdQuery(decisionId), cancellationToken);
+        return result.Match();
     }
 }

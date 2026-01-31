@@ -16,6 +16,7 @@ public sealed class DecisionConfiguration : IEntityTypeConfiguration<Decision>
         b.Property(x => x.Reason).IsRequired();
         b.Property(x => x.CreatedAt).IsRequired();
         b.Property(x => x.Metadata).HasColumnType("jsonb");
+        b.HasOne(x => x.Satellite).WithMany().HasForeignKey(x => x.SatelliteId).OnDelete(DeleteBehavior.Cascade);
         b.HasIndex(x => new { x.SatelliteId, x.BucketStart });
     }
 }

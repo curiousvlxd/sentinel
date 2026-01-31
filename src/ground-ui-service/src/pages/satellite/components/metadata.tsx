@@ -28,14 +28,14 @@ const Section = ({
         {title}
       </h3>
     </div>
-    <div className="space-y-2 text-sm text-slate-300">{children}</div>
+    <div className="space-y-2 text-sm text-slate-700 dark:text-slate-300">{children}</div>
   </div>
 );
 
 const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <p className="flex justify-between gap-4">
-    <span className="text-slate-400">{label}</span>
-    <span className="text-slate-100 text-right">{value}</span>
+    <span className="text-slate-600 dark:text-slate-400">{label}</span>
+    <span className="text-slate-800 dark:text-slate-100 text-right">{value}</span>
   </p>
 );
 
@@ -115,7 +115,7 @@ const Metadata = ({ satellite }: { satellite: Satellite }) => {
 
       {(satellite.tags || satellite.sensors) && (
         <>
-          <Separator className="my-6 bg-white/10" />
+          <Separator className="my-6 bg-slate-200 dark:bg-white/10" />
 
           <div className="space-y-3">
             {satellite.tags && (

@@ -1,152 +1,72 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Sentinel.Core.Abstractions.Persistence;
-using Sentinel.Core.Contracts;
-using Sentinel.Core.Entities;
 using Sentinel.Core.Enums;
+using Sentinel.Ground.Api.Extensions;
+using Sentinel.Ground.Application.Features.Operations.Common.Contracts;
+using Sentinel.Ground.Application.Features.Operations.CreateOperation;
+using Sentinel.Ground.Application.Features.Operations.ExecuteOperation;
+using Sentinel.Ground.Application.Features.Operations.GetOperationById;
+using Sentinel.Ground.Application.Features.Operations.GetOperationsByMission;
+using Sentinel.Ground.Application.Features.Operations.GetOperationsBySatellite;
+using Sentinel.Ground.Application.Features.Operations.PullOperations;
 
 namespace Sentinel.Ground.Api.Controllers;
 
 [ApiController]
 [Route("api")]
-public sealed class CommandsController : ControllerBase
+public sealed class CommandsController(IMediator mediator) : ControllerBase
 {
+    [HttpPost("commands/{commandId:guid}/execute")]
+    public async Task<IActionResult> Execute(Guid commandId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new ExecuteSatelliteOperationCommand(commandId), cancellationToken);
+        return result.Match();
+    }
+
     [HttpPost("satellites/{satelliteId:guid}/commands")]
-    public async Task<ActionResult<CommandDto>> Create(
+    public async Task<ActionResult<SatelliteOperationResponse>> Create(
         Guid satelliteId,
-        [FromBody] CommandCreateRequest request,
-        [FromServices] IGroundDbContext context,
+        [FromBody] CreateSatelliteOperationRequest request,
         CancellationToken cancellationToken)
     {
-        var satellite = await context.Satellites.FirstOrDefaultAsync(s => s.Id == satelliteId, cancellationToken);
-        if (satellite == null)
-            return NotFound("Satellite not found");
-        var cmd = new Command
-        {
-            Id = Guid.NewGuid(),
-            SatelliteId = satelliteId,
-            MissionId = satellite.MissionId,
-            Type = request.Type.Trim(),
-            PayloadJson = string.IsNullOrWhiteSpace(request.PayloadJson) ? null : request.PayloadJson.Trim(),
-            Priority = request.Priority,
-            TtlSec = request.TtlSec,
-            Status = CommandStatus.Queued,
-            CreatedAt = DateTime.UtcNow
-        };
-        context.Add(cmd);
-        await context.SaveChangesAsync(cancellationToken);
-        return CreatedAtAction(nameof(GetCommand), new { commandId = cmd.Id }, ToDto(cmd));
+        var result = await mediator.Send(new CreateSatelliteOperationCommand(satelliteId, request), cancellationToken);
+        return result.Match(response => CreatedAtAction(nameof(GetCommand), new { commandId = response.Id }, response));
     }
 
     [HttpGet("missions/{missionId:guid}/commands")]
-    public async Task<ActionResult<IReadOnlyList<CommandDto>>> ListByMission(
+    public async Task<ActionResult<IReadOnlyList<SatelliteOperationResponse>>> ListByMission(
         Guid missionId,
-        [FromQuery] string? status,
-        [FromServices] IGroundDbContext context,
+        [FromQuery] SatelliteOperationStatus? status,
         CancellationToken cancellationToken)
     {
-        var query = context.Commands.Where(c => c.MissionId == missionId);
-        if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<CommandStatus>(status, true, out var st))
-            query = query.Where(c => c.Status == st);
-        var list = await query
-            .OrderByDescending(c => c.CreatedAt)
-            .Select(c => new CommandDto
-            {
-                Id = c.Id,
-                SatelliteId = c.SatelliteId,
-                MissionId = c.MissionId,
-                Type = c.Type,
-                PayloadJson = c.PayloadJson,
-                Priority = c.Priority,
-                TtlSec = c.TtlSec,
-                Status = c.Status.ToString(),
-                CreatedAt = c.CreatedAt.ToString("O"),
-                ClaimedAt = c.ClaimedAt != null ? c.ClaimedAt.Value.ToString("O") : null,
-                ExecutedAt = c.ExecutedAt != null ? c.ExecutedAt.Value.ToString("O") : null
-            })
-            .ToListAsync(cancellationToken);
-        return Ok(list);
+        var result = await mediator.Send(new GetSatelliteOperationsByMissionQuery(missionId, status), cancellationToken);
+        return result.Match();
     }
 
     [HttpGet("satellites/{satelliteId:guid}/commands")]
-    public async Task<ActionResult<IReadOnlyList<CommandDto>>> ListBySatellite(
+    public async Task<ActionResult<IReadOnlyList<SatelliteOperationResponse>>> ListBySatellite(
         Guid satelliteId,
-        [FromQuery] string? status,
-        [FromServices] IGroundDbContext context,
+        [FromQuery] SatelliteOperationStatus? status,
         CancellationToken cancellationToken)
     {
-        var query = context.Commands.Where(c => c.SatelliteId == satelliteId);
-        if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<CommandStatus>(status, true, out var st))
-            query = query.Where(c => c.Status == st);
-        var list = await query
-            .OrderByDescending(c => c.CreatedAt)
-            .Select(c => new CommandDto
-            {
-                Id = c.Id,
-                SatelliteId = c.SatelliteId,
-                MissionId = c.MissionId,
-                Type = c.Type,
-                PayloadJson = c.PayloadJson,
-                Priority = c.Priority,
-                TtlSec = c.TtlSec,
-                Status = c.Status.ToString(),
-                CreatedAt = c.CreatedAt.ToString("O"),
-                ClaimedAt = c.ClaimedAt != null ? c.ClaimedAt.Value.ToString("O") : null,
-                ExecutedAt = c.ExecutedAt != null ? c.ExecutedAt.Value.ToString("O") : null
-            })
-            .ToListAsync(cancellationToken);
-        return Ok(list);
+        var result = await mediator.Send(new GetSatelliteOperationsBySatelliteQuery(satelliteId, status), cancellationToken);
+        return result.Match();
     }
 
     [HttpGet("commands/{commandId:guid}")]
-    public async Task<ActionResult<CommandDto>> GetCommand(
-        Guid commandId,
-        [FromServices] IGroundDbContext context,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<SatelliteOperationResponse>> GetCommand(Guid commandId, CancellationToken cancellationToken)
     {
-        var cmd = await context.Commands.FirstOrDefaultAsync(c => c.Id == commandId, cancellationToken);
-        if (cmd == null)
-            return NotFound();
-        return Ok(ToDto(cmd));
+        var result = await mediator.Send(new GetSatelliteOperationByIdQuery(commandId), cancellationToken);
+        return result.Match();
     }
 
     [HttpPost("satellites/{satelliteId:guid}/commands/pull")]
-    public async Task<ActionResult<IReadOnlyList<CommandDto>>> Pull(
+    public async Task<ActionResult<IReadOnlyList<SatelliteOperationResponse>>> Pull(
         Guid satelliteId,
-        [FromServices] IGroundDbContext context,
         CancellationToken cancellationToken,
         [FromQuery] int limit = 50)
     {
-        var cutoff = DateTime.UtcNow;
-        var queued = await context.Commands
-            .Where(c => c.SatelliteId == satelliteId && c.Status == CommandStatus.Queued && c.CreatedAt.AddSeconds(c.TtlSec) >= cutoff)
-            .OrderBy(c => c.Priority).ThenBy(c => c.CreatedAt)
-            .Take(limit)
-            .ToListAsync(cancellationToken);
-        foreach (var c in queued)
-        {
-            c.Status = CommandStatus.Claimed;
-            c.ClaimedAt = DateTime.UtcNow;
-        }
-        await context.SaveChangesAsync(cancellationToken);
-        return Ok(queued.Select(ToDto).ToList());
-    }
-
-    private static CommandDto ToDto(Command c)
-    {
-        return new CommandDto
-        {
-            Id = c.Id,
-            SatelliteId = c.SatelliteId,
-            MissionId = c.MissionId,
-            Type = c.Type,
-            PayloadJson = c.PayloadJson,
-            Priority = c.Priority,
-            TtlSec = c.TtlSec,
-            Status = c.Status.ToString(),
-            CreatedAt = c.CreatedAt.ToString("O"),
-            ClaimedAt = c.ClaimedAt?.ToString("O"),
-            ExecutedAt = c.ExecutedAt?.ToString("O")
-        };
+        var result = await mediator.Send(new PullSatelliteOperationsCommand(satelliteId, limit), cancellationToken);
+        return result.Match();
     }
 }

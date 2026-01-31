@@ -3,11 +3,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Literal
 
 import numpy as np
 
 from .schemas import TelemetryBucketRequest, SignalFeatures
+
+SimScenario = Literal["Normal", "Mixed", "Anomaly"]
 
 
 @dataclass(frozen=True)
@@ -28,6 +30,51 @@ DEFAULT_SPECS: Dict[str, SignalSpec] = {
     "signal_strength": SignalSpec(mean=-70.0, std=3.2, slope_mean=-0.40, slope_std=0.25),
     "power_consumption": SignalSpec(mean=150.0, std=18.0, slope_mean=0.8, slope_std=0.7),
 }
+
+_command_effect: dict | None = None
+EFFECT_TICKS = 8
+
+
+def set_command_effect(command_type: str, ticks: int = EFFECT_TICKS) -> None:
+    global _command_effect
+    _command_effect = {"type": command_type, "ticks": ticks}
+
+
+def get_and_consume_command_effect() -> dict | None:
+    global _command_effect
+    if _command_effect is None or _command_effect.get("ticks", 0) <= 0:
+        return None
+    effect = dict(_command_effect)
+    _command_effect["ticks"] = _command_effect["ticks"] - 1
+    if _command_effect["ticks"] <= 0:
+        _command_effect = None
+    return effect
+
+
+def _apply_spec_modifier(spec: SignalSpec, mean_scale: float = 1.0, std_scale: float = 1.0) -> SignalSpec:
+    return SignalSpec(
+        mean=spec.mean * mean_scale,
+        std=spec.std * std_scale,
+        slope_mean=spec.slope_mean,
+        slope_std=spec.slope_std,
+        missing_rate_mean=spec.missing_rate_mean,
+        missing_rate_std=spec.missing_rate_std,
+    )
+
+
+def apply_command_effect(specs: Dict[str, SignalSpec], effect: dict) -> Dict[str, SignalSpec]:
+    t = (effect.get("type") or "").lower()
+    out = dict(specs)
+    if "reducepower" in t:
+        if "power_consumption" in out:
+            out["power_consumption"] = _apply_spec_modifier(out["power_consumption"], mean_scale=0.75, std_scale=0.8)
+    elif "switchmode" in t:
+        if "signal_strength" in out:
+            out["signal_strength"] = _apply_spec_modifier(out["signal_strength"], mean_scale=1.0, std_scale=0.7)
+    elif "throttlepayload" in t:
+        if "power_consumption" in out:
+            out["power_consumption"] = _apply_spec_modifier(out["power_consumption"], mean_scale=0.9, std_scale=0.9)
+    return out
 
 
 def _make_features(rng: np.random.Generator, spec: SignalSpec) -> SignalFeatures:
@@ -85,6 +132,29 @@ def generate_bucket(
         bucket_start=bucket_start.replace(tzinfo=timezone.utc).isoformat().replace("+00:00", "Z"),
         bucket_sec=60,
         signals=signals,
+    )
+
+
+def generate_bucket_for_scenario(
+    bucket_start: datetime,
+    rng: np.random.Generator,
+    scenario: SimScenario,
+    specs: Dict[str, SignalSpec] | None = None,
+) -> TelemetryBucketRequest:
+    specs = specs or DEFAULT_SPECS
+    effect = get_and_consume_command_effect()
+    if effect:
+        specs = apply_command_effect(specs, effect)
+    if scenario == "Normal":
+        return generate_bucket(
+            bucket_start, rng, specs, anomaly_prob=0.0, drop_signal_prob=0.0
+        )
+    if scenario == "Mixed":
+        return generate_bucket(
+            bucket_start, rng, specs, anomaly_prob=0.20, drop_signal_prob=0.05
+        )
+    return generate_bucket(
+        bucket_start, rng, specs, anomaly_prob=1.0, drop_signal_prob=0.15
     )
 
 

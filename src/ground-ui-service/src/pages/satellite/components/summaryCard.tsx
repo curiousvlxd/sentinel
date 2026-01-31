@@ -18,15 +18,15 @@ const SummaryCard = ({ summary }: Props) => {
 
   return (
     <div
-      className="w-full max-w-3xl rounded-xl bg-[#626a76] p-4 shadow-md hover:shadow-lg transition-all cursor-pointer"
+      className="w-full max-w-3xl rounded-xl bg-slate-200 dark:bg-[#626a76] p-4 shadow-md hover:shadow-lg transition-all cursor-pointer"
       onClick={() => setExpanded(!expanded)}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-indigo-100">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-indigo-100">
             Telemetry Bucket
           </h3>
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-slate-700 dark:text-slate-300">
             {new Date(summary.bucket_start).toLocaleString()}
           </p>
 
@@ -40,22 +40,22 @@ const SummaryCard = ({ summary }: Props) => {
           </div>
         </div>
 
-        <div className="text-indigo-300 text-sm">{expanded ? "▲" : "▼"}</div>
+        <div className="text-slate-600 dark:text-indigo-300 text-sm">{expanded ? "▲" : "▼"}</div>
       </div>
 
       {expanded && (
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-          <div className="rounded-lg bg-[#1e2a3a] p-3 border border-indigo-500/30">
+          <div className="rounded-lg bg-slate-100 dark:bg-[#1e2a3a] p-3 border border-slate-300 dark:border-indigo-500/30">
             <div className="flex items-center gap-2 mb-2">
-              <Brain className="h-4 w-4 text-indigo-400" />
-              <h4 className="font-semibold text-indigo-200">
+              <Brain className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+              <h4 className="font-semibold text-slate-800 dark:text-indigo-200">
                 Onboard ML Summary
               </h4>
 
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-4 w-4 text-slate-400" />
+                    <Info className="h-4 w-4 text-slate-600 dark:text-slate-400" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs text-xs">
                     This data is computed onboard and is always available to
@@ -69,7 +69,7 @@ const SummaryCard = ({ summary }: Props) => {
               </Badge>
             </div>
 
-            <p className="text-xs text-slate-300 mb-2">
+            <p className="text-xs text-slate-700 dark:text-slate-300 mb-2">
               Model: {summary.ml.model.name} v{summary.ml.model.version}
             </p>
 
@@ -77,8 +77,8 @@ const SummaryCard = ({ summary }: Props) => {
               {Object.entries(summary.ml.per_signal_score).map(
                 ([key, value]) => (
                   <div key={key} className="flex justify-between text-xs">
-                    <span className="text-slate-300">{key}</span>
-                    <span className="text-indigo-200 font-mono">
+                    <span className="text-slate-700 dark:text-slate-300">{key}</span>
+                    <span className="text-slate-900 dark:text-indigo-200 font-mono">
                       {value.toFixed(3)}
                     </span>
                   </div>
@@ -87,10 +87,10 @@ const SummaryCard = ({ summary }: Props) => {
             </div>
 
             <div className="mt-3">
-              <h5 className="text-xs font-semibold text-indigo-200 mb-1">
+              <h5 className="text-xs font-semibold text-slate-800 dark:text-indigo-200 mb-1">
                 Top Contributors
               </h5>
-              <ul className="list-disc ml-4 text-xs text-slate-300">
+              <ul className="list-disc ml-4 text-xs text-slate-700 dark:text-slate-300">
                 {summary.ml.top_contributors.map((c) => (
                   <li key={c.key}>
                     {c.key} ({c.weight.toFixed(2)})
@@ -100,18 +100,17 @@ const SummaryCard = ({ summary }: Props) => {
             </div>
           </div>
 
-          {/* AI RESPONSE */}
-          <div className="rounded-lg bg-[#1e2a3a] p-3 border border-indigo-500/20">
+          <div className="rounded-lg bg-slate-100 dark:bg-[#1e2a3a] p-3 border border-slate-300 dark:border-indigo-500/20">
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="h-4 w-4 text-fuchsia-400" />
-              <h4 className="font-semibold text-indigo-200">
+              <Sparkles className="h-4 w-4 text-fuchsia-600 dark:text-fuchsia-400" />
+              <h4 className="font-semibold text-slate-800 dark:text-indigo-200">
                 AI Decision Support
               </h4>
 
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-4 w-4 text-slate-400" />
+                    <Info className="h-4 w-4 text-slate-600 dark:text-slate-400" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs text-xs">
                     This insight is generated on Earth and may be unavailable
@@ -120,17 +119,17 @@ const SummaryCard = ({ summary }: Props) => {
                 </Tooltip>
               </TooltipProvider>
 
-              <Badge className="ml-auto bg-slate-500/20 text-slate-300">
+              <Badge className="ml-auto bg-slate-500/20 text-slate-700 dark:text-slate-300">
                 EARTH LINK
               </Badge>
             </div>
 
             {summary.ai_response ? (
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                 {summary.ai_response}
               </p>
             ) : (
-              <div className="flex items-center gap-2 text-xs text-slate-400">
+              <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
                 <ShieldCheck className="h-4 w-4" />
                 AI response unavailable
               </div>

@@ -1,4 +1,4 @@
-using Sentinel.Core.Contracts;
+using Sentinel.Core.Contracts.Telemetry;
 
 namespace Sentinel.Satellite.Service.Contracts.OnboardAi;
 
@@ -20,6 +20,7 @@ public static class OnboardAiMapper
                 MissingRate = kv.Value.MissingRate
             };
         }
+
         return new OnboardAiScoreRequest
         {
             SchemaVersion = bucket.SchemaVersion,

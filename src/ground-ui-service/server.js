@@ -6,8 +6,6 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-// Aspire injects GROUND_API_URL like http://localhost:5276; from inside Docker that
-// is unreachable — use host.docker.internal so the container can reach the host.
 function getGroundApiUrl() {
   const raw = process.env.GROUND_API_URL || "http://localhost:5276";
   if (process.env.GROUND_API_URL && raw.includes("localhost")) {

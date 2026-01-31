@@ -22,8 +22,8 @@ public static class MigrationExtension
             using (var scope = host.Services.CreateScope())
             {
                 var options = scope.ServiceProvider.GetService<IOptions<GroundDatabaseOptions>>()?.Value;
-                if (options?.MigrateOnStartup != true)
-                    return;
+                if (options?.MigrateOnStartup != true) return;
+
                 var db = scope.ServiceProvider.GetRequiredService<IGroundDbContext>();
                 try
                 {
@@ -36,8 +36,8 @@ public static class MigrationExtension
                         attempt, MaxRetries, RetryDelay.TotalSeconds);
                 }
             }
-            if (attempt < MaxRetries)
-                await Task.Delay(RetryDelay);
+
+            if (attempt < MaxRetries) await Task.Delay(RetryDelay);
         }
     }
 }

@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "./layouts/AppLayout";
 import Home from "./pages/home/Home";
-import MissionCommands from "./pages/missions/MissionCommands";
 import MissionDetails from "./pages/missions/MissionDetails";
 import MissionForm from "./pages/missions/MissionForm";
 import MissionsList from "./pages/missions/MissionsList";
@@ -35,10 +34,6 @@ export const router = createBrowserRouter([
       {
         path: "missions/:id",
         element: <MissionDetails />,
-      },
-      {
-        path: "missions/:missionId/commands",
-        element: <MissionCommands />,
       },
       {
         path: "satellites",

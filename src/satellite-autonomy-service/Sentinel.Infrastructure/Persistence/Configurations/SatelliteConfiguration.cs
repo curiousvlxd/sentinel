@@ -17,7 +17,7 @@ public sealed class SatelliteConfiguration : IEntityTypeConfiguration<Satellite>
         b.Property(x => x.State).IsRequired().HasConversion<string>();
         b.Property(x => x.LinkStatus).IsRequired().HasConversion<string>();
         b.Property(x => x.CreatedAt).IsRequired();
-        b.HasOne<Mission>().WithMany().HasForeignKey(x => x.MissionId).OnDelete(DeleteBehavior.SetNull);
+        b.HasOne(x => x.Mission).WithMany(m => m.Satellites).HasForeignKey(x => x.MissionId).OnDelete(DeleteBehavior.SetNull);
         b.HasIndex(x => x.MissionId);
         b.HasIndex(x => x.Status);
     }

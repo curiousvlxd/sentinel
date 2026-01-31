@@ -1,28 +1,19 @@
-const CardWrap = ({ children }: { children: React.ReactNode }) => {
+interface CardWrapProps {
+  children: React.ReactNode;
+  tall?: boolean;
+}
+
+const CardWrap = ({ children, tall }: CardWrapProps) => {
   return (
     <div className="flex w-full items-center justify-center">
       <div
-        className="
-          w-full
-          h-[80vh]
-          rounded-2xl
-          bg-[#263244]
-          shadow-[0_10px_30px_rgba(0,0,0,0.25)]
-          relative
-        "
+        className={
+          tall
+            ? "w-full min-h-[92vh] rounded-2xl relative border border-slate-200 dark:border-slate-600 bg-white shadow-lg dark:bg-[#263244] dark:shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
+            : "w-full h-[80vh] rounded-2xl relative border border-slate-200 dark:border-slate-600 bg-white shadow-lg dark:bg-[#263244] dark:shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
+        }
       >
-        <div
-          className="
-            h-full
-            overflow-y-auto
-            px-6 py-4
-
-            [&::-webkit-scrollbar]:w-2
-            [&::-webkit-scrollbar-track]:bg-[#1e2a3a] [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:m-1
-            [&::-webkit-scrollbar-thumb]:bg-indigo-500/40 [&::-webkit-scrollbar-thumb]:rounded-full
-            [&::-webkit-scrollbar-thumb:hover]:bg-indigo-400/60
-          "
-        >
+        <div className="h-full min-h-0 overflow-y-auto px-6 py-4 text-slate-900 dark:text-indigo-100">
           {children}
         </div>
       </div>

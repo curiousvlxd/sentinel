@@ -1,13 +1,13 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using Sentinel.Core.Contracts;
+using Microsoft.Extensions.Options;
 using Sentinel.Ground.Api.Services;
 
 namespace Sentinel.Ground.Api.Controllers;
 
 [ApiController]
 [Route("api/health")]
-public sealed class HealthController : ControllerBase
+public sealed class HealthController(IOptions<JsonOptions> jsonOptions) : ControllerBase
 {
     [HttpGet("live")]
     public async Task GetLiveSse([FromServices] SseEventBus eventBus, CancellationToken cancellationToken)
@@ -16,7 +16,7 @@ public sealed class HealthController : ControllerBase
         Response.Headers.CacheControl = "no-cache";
         await Response.StartAsync(cancellationToken);
 
-        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+        var options = jsonOptions.Value.JsonSerializerOptions;
         await foreach (var evt in eventBus.SubscribeAsync(cancellationToken: cancellationToken))
         {
             var json = JsonSerializer.Serialize(evt, options);

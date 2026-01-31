@@ -1,8 +1,5 @@
-using Aspire.Hosting.ApplicationModel;
-
 namespace Sentinel.AppHost;
 
-public sealed class GroupResource : Resource
+public sealed class GroupResource(string name) : Resource(name)
 {
-    public GroupResource(string name) : base(name) { }
 }

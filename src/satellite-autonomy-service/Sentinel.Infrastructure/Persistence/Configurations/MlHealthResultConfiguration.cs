@@ -19,6 +19,7 @@ public sealed class MlHealthResultConfiguration : IEntityTypeConfiguration<MlHea
         b.Property(x => x.PerSignalScore).IsRequired().HasColumnType("jsonb");
         b.Property(x => x.TopContributors).IsRequired().HasColumnType("jsonb");
         b.Property(x => x.CreatedAt).IsRequired();
+        b.HasOne(x => x.Satellite).WithMany().HasForeignKey(x => x.SatelliteId).OnDelete(DeleteBehavior.Cascade);
         b.HasIndex(x => new { x.SatelliteId, x.BucketStart });
     }
 }

@@ -1,6 +1,3 @@
-using Aspire.Hosting;
-using Aspire.Hosting.ApplicationModel;
-
 namespace Sentinel.AppHost;
 
 public static class GroupExtensions

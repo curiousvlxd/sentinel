@@ -13,22 +13,22 @@ public sealed class GroundDatabaseOptionsSetup(IConfiguration configuration)
         configuration.GetSection(GroundDatabaseOptions.SectionName).Bind(options);
         var connSection = configuration.GetSection(ConnectionStringsKeys.SectionName);
         var cs = connSection["ground"] ?? connSection["Ground"] ?? connSection[ConnectionStringsKeys.GroundDb];
-        if (string.IsNullOrWhiteSpace(cs))
-            return;
+        if (string.IsNullOrWhiteSpace(cs)) return;
+
         var csb = new NpgsqlConnectionStringBuilder(cs);
-        if (ShouldDisableSsl(csb))
-            csb.SslMode = SslMode.Disable;
+        if (ShouldDisableSsl(csb)) csb.SslMode = SslMode.Disable;
+
         options.ConnectionString = csb.ConnectionString;
     }
 
     private bool ShouldDisableSsl(NpgsqlConnectionStringBuilder csb)
     {
-        var env = configuration["ASPNETCORE_ENVIRONMENT"] ?? configuration["DOTNET_ENVIRONMENT"] ?? "";
-        if (env.Equals("Development", StringComparison.OrdinalIgnoreCase))
-            return true;
-        if (csb.SslMode is SslMode.Require or SslMode.VerifyFull or SslMode.VerifyCA)
-            return false;
-        var host = csb.Host?.Trim() ?? "";
+        var env = configuration["ASPNETCORE_ENVIRONMENT"] ?? configuration["DOTNET_ENVIRONMENT"] ?? string.Empty;
+        if (env.Equals("Development", StringComparison.OrdinalIgnoreCase)) return true;
+
+        if (csb.SslMode is SslMode.Require or SslMode.VerifyFull or SslMode.VerifyCA) return false;
+
+        var host = csb.Host?.Trim() ?? string.Empty;
         return host.Length == 0 ||
                host.Equals("localhost", StringComparison.OrdinalIgnoreCase) ||
                host == "127.0.0.1" ||

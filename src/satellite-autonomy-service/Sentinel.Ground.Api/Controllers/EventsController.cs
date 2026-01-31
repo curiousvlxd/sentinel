@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Sentinel.Core.Contracts;
+using Sentinel.Core.Contracts.Events;
 using Sentinel.Ground.Api.Services;
 
 namespace Sentinel.Ground.Api.Controllers;

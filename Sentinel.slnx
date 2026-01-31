@@ -7,6 +7,9 @@
     <File Path="infra/sql/satellite-db/Dockerfile" />
   </Folder>
   <Folder Name="/infra/sql/" />
+  <Folder Name="/docs/">
+    <File Path="README.md" />
+  </Folder>
   <Folder Name="/infra/" />
   <Folder Name="/infra/scripts/">
     <File Path="infra/scripts/.gitkeep" />
@@ -138,6 +141,7 @@
   <Folder Name="/src/satellite-autonomy-service/">
     <Project Path="src/satellite-autonomy-service/Sentinel.AppHost/Sentinel.AppHost.csproj" />
     <Project Path="src/satellite-autonomy-service/Sentinel.Core/Sentinel.Core.csproj" />
+    <Project Path="src/satellite-autonomy-service/Sentinel.Ground.Application/Sentinel.Ground.Application.csproj" />
     <Project Path="src/satellite-autonomy-service/Sentinel.Ground.Api/Sentinel.Ground.Api.csproj" />
     <Project Path="src/satellite-autonomy-service/Sentinel.Infrastructure/Sentinel.Infrastructure.csproj" />
     <Project Path="src/satellite-autonomy-service/Sentinel.Satellite.Service/Sentinel.Satellite.Service.csproj" />

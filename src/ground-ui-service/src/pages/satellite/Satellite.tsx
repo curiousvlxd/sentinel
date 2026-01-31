@@ -34,7 +34,7 @@ const SatellitePage = () => {
 
   if (!satellite) {
     return (
-      <div className="flex justify-center items-center h-screen text-slate-300">
+      <div className="flex justify-center items-center h-screen text-slate-700 dark:text-slate-300">
         Satellite not found.
       </div>
     );

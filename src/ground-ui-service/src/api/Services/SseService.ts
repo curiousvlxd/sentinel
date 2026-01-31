@@ -55,6 +55,9 @@ export function subscribeMissionEvents(
   return () => ac.abort();
 }
 
+const SSE_RECONNECT_DELAY_MS = 2000;
+const SSE_MAX_RECONNECT_DELAY_MS = 15000;
+
 export function subscribeSatelliteEvents(
   satelliteId: string,
   onEvent: (evt: SseEvent) => void,
@@ -62,20 +65,27 @@ export function subscribeSatelliteEvents(
 ): () => void {
   const url = `${getBaseUrl()}/api/sse/satellites/${satelliteId}`;
   const ac = new AbortController();
+  let reconnectDelay = SSE_RECONNECT_DELAY_MS;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const run = async () => {
+    if (ac.signal.aborted) return;
     try {
       const res = await fetch(url, { signal: ac.signal });
+      if (ac.signal.aborted) return;
       if (!res.ok || !res.body) {
         onError?.(new Error(`SSE ${res.status}`));
+        scheduleReconnect();
         return;
       }
+      reconnectDelay = SSE_RECONNECT_DELAY_MS;
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
       for (;;) {
         const { done, value } = await reader.read();
         if (done) break;
+        if (ac.signal.aborted) return;
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split("\n");
         buffer = lines.pop() ?? "";
@@ -84,13 +94,31 @@ export function subscribeSatelliteEvents(
           if (evt) onEvent(evt);
         }
       }
+      scheduleReconnect();
     } catch (err) {
       if ((err as Error).name !== "AbortError") {
         onError?.(err instanceof Error ? err : new Error(String(err)));
       }
+      if (!ac.signal.aborted) scheduleReconnect();
     }
   };
+
+  function scheduleReconnect() {
+    if (ac.signal.aborted) return;
+    timeoutId = setTimeout(() => {
+      timeoutId = null;
+      run();
+      reconnectDelay = Math.min(reconnectDelay * 1.5, SSE_MAX_RECONNECT_DELAY_MS);
+    }, reconnectDelay);
+  }
+
   run();
 
-  return () => ac.abort();
+  return () => {
+    ac.abort();
+    if (timeoutId != null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
 }

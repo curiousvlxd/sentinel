@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Бэкенд вызывается напрямую (http://localhost:5276/api/), а не через хост UI.
 const apiBase =
   (import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5276").replace(/\/$/, "");
 const apiBaseURL = `${apiBase}/api/`;

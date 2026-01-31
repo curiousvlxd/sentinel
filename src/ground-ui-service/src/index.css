@@ -46,24 +46,24 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.12 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.12 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --popover-foreground: oklch(0.12 0 0);
+  --primary: oklch(0.25 0 0);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0 0);
+  --secondary-foreground: oklch(0.2 0 0);
+  --muted: oklch(0.94 0 0);
+  --muted-foreground: oklch(0.38 0 0);
+  --accent: oklch(0.94 0 0);
+  --accent-foreground: oklch(0.2 0 0);
+  --destructive: oklch(0.55 0.22 27);
+  --border: oklch(0.86 0 0);
+  --input: oklch(0.88 0 0);
+  --ring: oklch(0.55 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -111,6 +111,49 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* Custom scrollbars — light theme */
+* {
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+  scrollbar-color: rgb(99 102 241 / 0.4) #e2e8f0;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 9999px;
+  margin: 2px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgb(99 102 241 / 0.4);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(99 102 241 / 0.6);
+}
+*::-webkit-scrollbar-corner {
+  background: #e2e8f0;
+}
+
+/* Custom scrollbars — dark theme */
+.dark *::-webkit-scrollbar-track {
+  background: #1e2a3a;
+}
+.dark *::-webkit-scrollbar-thumb {
+  background: rgb(99 102 241 / 0.5);
+}
+.dark *::-webkit-scrollbar-thumb:hover {
+  background: rgb(99 102 241 / 0.7);
+}
+.dark *::-webkit-scrollbar-corner {
+  background: #1e2a3a;
+}
+.dark * {
+  scrollbar-color: rgb(99 102 241 / 0.5) #1e2a3a;
 }
 
 @layer base {

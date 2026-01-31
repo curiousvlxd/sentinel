@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Sentinel.ServiceDefaults\Sentinel.ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Clients\" />
+  </ItemGroup>
+
 </Project>

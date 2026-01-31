@@ -1,0 +1,26 @@
+{
+  "settings": {
+    "documentationRules": {
+      "companyName": "Meety",
+      "documentExposedElements": false,
+      "documentInterfaces": false,
+      "documentInternalElements": false
+    },
+    "layoutRules": {
+      "newlineAtEndOfFile": "require"
+    },
+    "maintainabilityRules": {
+      "topLevelTypes": [
+        "class",
+        "struct",
+        "record"
+      ]
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace"
+    },
+    "namingRules": {
+      "allowCommonHungarianPrefixes": false
+    }
+  }
+}

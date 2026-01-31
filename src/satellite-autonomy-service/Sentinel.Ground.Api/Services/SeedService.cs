@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Sentinel.Core.Abstractions.Persistence;
 using Sentinel.Core.Entities;
 using Sentinel.Core.Enums;
-using Sentinel.Ground.Api.Options;
+using Sentinel.Ground.Api.Services.Seed.Options;
 
 namespace Sentinel.Ground.Api.Services;
 
@@ -19,16 +19,18 @@ public sealed class SeedService(
 
         var missionIdStr = seedOptions.Value.MissionId;
         var satelliteIdsStr = seedOptions.Value.SatelliteIds;
+
         if (string.IsNullOrWhiteSpace(missionIdStr) || string.IsNullOrWhiteSpace(satelliteIdsStr) ||
             !Guid.TryParse(missionIdStr.Trim(), out var missionId))
             return;
 
-        var ids = satelliteIdsStr!
+        var ids = satelliteIdsStr
             .Split([';', ','], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Select(s => Guid.TryParse(s, out var g) ? (Guid?)g : null)
             .Where(g => g.HasValue)
-            .Select(g => g!.Value)
+            .SelectMany(g => g is { } v ? new[] { v } : Array.Empty<Guid>())
             .ToList();
+
         if (ids.Count == 0)
             return;
 
@@ -37,7 +39,7 @@ public sealed class SeedService(
             Id = missionId,
             Name = "Airbus Sentinel Mission",
             Description = "Hackathon demo",
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = DateTimeOffset.UtcNow,
             IsActive = true
         };
         context.Add(mission);
@@ -53,9 +55,10 @@ public sealed class SeedService(
                 Mode = SatelliteMode.Assisted,
                 State = SatelliteState.Ok,
                 LinkStatus = LinkStatus.Offline,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTimeOffset.UtcNow
             });
         }
+
         await context.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Seeded mission {MissionId} and {Count} satellites.", mission.Id, ids.Count);
     }

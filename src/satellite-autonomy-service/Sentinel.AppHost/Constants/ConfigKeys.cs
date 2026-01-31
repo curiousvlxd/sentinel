@@ -10,4 +10,6 @@ public static class ConfigKeys
     public const string SatelliteInstanceName = "Satellite__InstanceName";
     public const string SatelliteOnboardAiServiceName = "Satellite__OnboardAiServiceName";
     public const string SimulatorMissionId = "Simulator__MissionId";
+
+    public const string SimulatorSatelliteId = "Simulator__SatelliteId";
 }

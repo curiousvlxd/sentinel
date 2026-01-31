@@ -1,19 +1,31 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.1">
+<Project Sdk="Aspire.AppHost.Sdk/13.1.0">
+
+  <Import Project="Sentinel.AppHost.targets" />
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <IsAspireSharedProject>false</IsAspireSharedProject>
     <UserSecretsId>Sentinel.AppHost</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(_TargetRid)' != ''">
+    <PackageReference Include="Aspire.Hosting.Orchestration.win-x64" Condition="'$(_TargetRid)' == 'win-x64'" />
+    <PackageReference Include="Aspire.Hosting.Orchestration.win-arm64" Condition="'$(_TargetRid)' == 'win-arm64'" />
+    <PackageReference Include="Aspire.Hosting.Orchestration.linux-x64" Condition="'$(_TargetRid)' == 'linux-x64'" />
+    <PackageReference Include="Aspire.Hosting.Orchestration.linux-arm64" Condition="'$(_TargetRid)' == 'linux-arm64'" />
+    <PackageReference Include="Aspire.Hosting.Orchestration.osx-x64" Condition="'$(_TargetRid)' == 'osx-x64'" />
+    <PackageReference Include="Aspire.Hosting.Orchestration.osx-arm64" Condition="'$(_TargetRid)' == 'osx-arm64'" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting" />
     <PackageReference Include="Aspire.Hosting.AppHost" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <PackageReference Include="Aspire.Npgsql" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     <PackageReference Include="Scalar.Aspire" />
   </ItemGroup>
 

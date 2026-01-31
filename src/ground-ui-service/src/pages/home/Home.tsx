@@ -42,8 +42,8 @@ const Home = () => {
   return (
     <CardWrap>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-indigo-100">Ground Control</h1>
-        <p className="mt-1 text-slate-400">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-indigo-100">Ground Control</h1>
+        <p className="mt-1 text-slate-700 dark:text-slate-400">
           Missions and satellites overview
         </p>
       </div>
@@ -59,9 +59,9 @@ const Home = () => {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-xl bg-[#1e2a3a] p-4">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-600 dark:bg-[#1e2a3a] p-4">
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-indigo-100 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-indigo-100 flex items-center gap-2">
                 <Rocket className="h-5 w-5" />
                 Missions
               </h2>
@@ -74,7 +74,7 @@ const Home = () => {
               </Button>
             </div>
             {missions.length === 0 ? (
-              <p className="text-sm text-slate-500">No missions.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-500">No missions.</p>
             ) : (
               <ul className="space-y-2">
                 {missions.slice(0, 5).map((m) => (
@@ -82,7 +82,7 @@ const Home = () => {
                     <button
                       type="button"
                       onClick={() => navigate(`/missions/${m.id}`)}
-                      className="text-left w-full rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-[#263244] transition"
+                      className="text-left w-full rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#263244] transition"
                     >
                       {m.name}
                     </button>
@@ -92,9 +92,9 @@ const Home = () => {
             )}
           </div>
 
-          <div className="rounded-xl bg-[#1e2a3a] p-4">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-600 dark:bg-[#1e2a3a] p-4">
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-indigo-100 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-indigo-100 flex items-center gap-2">
                 <SatelliteIcon className="h-5 w-5" />
                 Satellites
               </h2>
@@ -107,7 +107,7 @@ const Home = () => {
               </Button>
             </div>
             {satellites.length === 0 ? (
-              <p className="text-sm text-slate-500">No satellites.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-500">No satellites.</p>
             ) : (
               <ul className="space-y-2">
                 {satellites.slice(0, 5).map((s) => (
@@ -115,10 +115,10 @@ const Home = () => {
                     <button
                       type="button"
                       onClick={() => navigate(`/satellites/${s.id}`)}
-                      className="text-left w-full rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-[#263244] transition flex items-center justify-between"
+                      className="text-left w-full rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#263244] transition flex items-center justify-between"
                     >
                       <span>{s.name}</span>
-                      <span className="text-xs text-slate-500">{s.state}</span>
+                      <span className="text-xs text-slate-600 dark:text-slate-500">{s.state}</span>
                     </button>
                   </li>
                 ))}

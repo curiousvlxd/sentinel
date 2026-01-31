@@ -96,7 +96,12 @@ def score_bucket(
     anomaly_score = float(np.clip(anomaly_score, 0.0, 1.0))
 
     spread = max(float(artifact.score_p95 - artifact.score_p05), 1e-9)
-    confidence = float(np.clip(abs(decision - float(artifact.score_p50)) / spread, 0.0, 1.0))
+    normalized_distance = float(np.clip(abs(decision - float(artifact.score_p50)) / spread, 0.0, 1.0))
+    if anomaly_score < 0.5:
+        confidence = 1.0 - normalized_distance
+    else:
+        confidence = normalized_distance
+    confidence = float(np.clip(confidence, 0.0, 1.0))
 
     deviations: Dict[str, float] = {}
     for col in artifact.schema.columns:
